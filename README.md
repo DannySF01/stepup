@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👟 StepUp
 
-## Getting Started
+**StepUp** é uma aplicação moderna de e-commerce de calçado, desenvolvida para demonstrar uma arquitetura web limpa e escalável, utilizando tecnologias modernas.
 
-First, run the development server:
+## 🚀 Demo Online
+
+🔗 TODO
+
+## 📸 Screenshots
+
+TODO
+
+## 🧠 Objetivos do Projeto
+
+- Praticar desenvolvimento frontend moderno com **Next.js e TypeScript**
+- Construir um fluxo realista de **e-commerce**
+- Aplicar boas práticas de código limpo e organização de pastas
+- Trabalhar com autenticação e uma base de dados real
+- Fazer deploy de uma aplicação full-stack
+
+## 🛠️ Stack Tecnológica
+
+### Frontend
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+
+### Backend / Serviços
+
+- Supabase (Autenticação e Base de Dados)
+
+### Base de Dados
+
+- PostgreSQL
+
+### Deploy
+
+- Vercel
+
+## ✨ Funcionalidades
+
+### 👤 Autenticação
+
+- Registo de utilizadores
+- Login e logout
+- Proteção de rotas
+
+### 🛍️ Loja
+
+- Listagem de produtos
+- Página de detalhe do produto
+- Filtro por categoria
+- Pesquisa de produtos
+- Layout responsivo
+
+### 🛒 Carrinho & Encomendas
+
+- Adicionar e remover produtos do carrinho
+- Atualizar quantidades dos produtos
+- Persistência do carrinho
+- Checkout simulado
+- Criação de encomendas
+
+### 🧑‍💼 Administração
+
+- Dashboard de administração
+- Criar, editar e remover produtos
+- Upload de imagens
+- Gestão de stock
+
+## 📂 Estrutura do Projeto
+
+```
+/app
+  /products
+  /cart
+  /auth
+
+/components
+  /layout
+  /ui
+
+/lib
+  /supabase
+
+```
+
+## 🗄️ Estrutura da Base de Dados
+
+TODO
+
+## ⚙️ Como Executar o Projeto
+
+### Pré-requisitos
+
+- Node.js (v18 ou superior)
+- npm ou yarn
+- Conta no Supabase (https://supabase.com)
+
+### Clonar o repositório
+
+```bash
+git clone https://github.com/DannySF01/stepup.git
+cd stepup
+```
+
+### Instalar dependências
+
+```bash
+npm install
+```
+
+### Variáveis de Ambiente
+
+Criar um ficheiro .env.local na raiz do projeto:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=supabase_anon_key
+```
+
+### Executar em modo de desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📚 O Que Aprendi
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Desenvolvimento de uma aplicação full-stack com Next.js
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Gestão de autenticação e base de dados com Supabase
 
-## Learn More
+Estruturação de um projeto React escalável
 
-To learn more about Next.js, take a look at the following resources:
+Implementação de lógica real de e-commerce
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Deploy de aplicações web com Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 👨‍💻 Autor
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Desenvolvido por Daniel Fernandes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub: https://github.com/DannySF01
+
+LinkedIn: https://linkedin.com/in/daniel-f-874186115
+
+---
+
+## 📝 Licença
+
+Este projeto foi desenvolvido exclusivamente para fins educativos.
