@@ -27,10 +27,11 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  font-sans mx-auto container overflow-x-hidden antialiased flex flex-col min-h-screen bg-zinc-50 dark:bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans mx-auto container overflow-x-hidden antialiased flex flex-col min-h-screen bg-zinc-50 dark:bg-black`}
       >
         <Header />
-        {children}
+        <div className="pt-(--header-height)">{children}</div>
+        <Footer />
       </body>
     </html>
   );
