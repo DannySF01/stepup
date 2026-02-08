@@ -6,6 +6,8 @@ export type ProductSize = Database["public"]["Tables"]["product_sizes"]["Row"];
 
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 
+export type Brand = Database["public"]["Tables"]["brands"]["Row"];
+
 export interface Database {
   public: {
     Tables: {
@@ -13,16 +15,19 @@ export interface Database {
         Row: {
           id: string;
           name: string;
+          slug: string;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
+          slug: string;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
+          slug: string;
           created_at?: string;
         };
       };
@@ -32,27 +37,42 @@ export interface Database {
           name: string;
           description: string | null;
           price: number;
+          on_sale: boolean;
+          sale_price: number | null;
           image_url: string;
           category_id: string | null;
           created_at: string;
+          is_featured: boolean;
+          brand_id: string | null;
+          gender: string | null;
         };
         Insert: {
           id?: string;
           name: string;
           description?: string | null;
           price: number;
+          on_sale: boolean;
+          sale_price: number | null;
           image_url: string;
           category_id?: string | null;
           created_at?: string;
+          is_featured?: boolean;
+          brand_id: string | null;
+          gender: string | null;
         };
         Update: {
           id?: string;
           name?: string;
           description?: string | null;
           price?: number;
+          on_sale: boolean;
+          sale_price: number | null;
           image_url: string;
           category_id?: string | null;
           created_at?: string;
+          is_featured?: boolean;
+          brand_id: string | null;
+          gender: string | null;
         };
       };
       product_sizes: {
@@ -84,6 +104,20 @@ export interface Database {
           product_id: string;
           name: string;
           comment: string;
+          created_at?: string;
+        };
+      };
+      brands: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
           created_at?: string;
         };
       };
