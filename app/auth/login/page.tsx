@@ -10,16 +10,35 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "@/services/authService";
 
 export default function Login() {
   const router = useRouter();
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-    router.push("/");
-  };
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error } = await signIn(email, password);
+      if (error) {
+        throw error;
+      } else {
+        router.push("/");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 ">
@@ -32,9 +51,16 @@ export default function Login() {
                 Login to your StepUp account
               </p>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="text" placeholder="m@example.com" />
+              <Input
+                id="email"
+                type="text"
+                placeholder="m@example.com"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Field>
             <Field>
               <div className="flex items-center">
@@ -46,7 +72,13 @@ export default function Login() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" placeholder="••••••••" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Field>
             <Field>
               <Button type="submit">Login</Button>

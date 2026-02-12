@@ -8,6 +8,8 @@ export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 
 export type Brand = Database["public"]["Tables"]["brands"]["Row"];
 
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
 export interface Database {
   public: {
     Tables: {
@@ -118,6 +120,22 @@ export interface Database {
           id?: string;
           name: string;
           slug: string;
+          created_at?: string;
+        };
+      };
+      profiles: {
+        Row: {
+          id: string;
+          name: string | null;
+          avatar_url: string | null;
+          role: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name?: string | null;
+          avatar_url?: string | null;
+          role: string;
           created_at?: string;
         };
       };

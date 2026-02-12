@@ -1,5 +1,5 @@
 import { Category, Product } from "@/lib/types/database.types";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import Sort from "./Sort";
 import Card from "@/components/ui/card";
 import Sidenav from "@/components/ui/sidenav";
@@ -17,6 +17,8 @@ export default async function Products({
     max: string;
   }>;
 }) {
+  const supabase = createClient();
+
   const params = await searchParams;
 
   //created a supabase view to calculate the effective price

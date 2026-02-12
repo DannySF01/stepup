@@ -1,10 +1,12 @@
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Category, Product } from "@/lib/types/database.types";
 import Card from "@/components/ui/card";
 import Banner from "@/components/ui/banner";
 
 export default async function Home() {
+  const supabase = createClient();
+
   const { data: categories } = await supabase.from("categories").select("*");
   const { data: newArrivals } = await supabase
     .from("products")

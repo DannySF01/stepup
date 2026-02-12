@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types/database.types";
 import ProductDetails from "./ProductDetails";
 import ProductComments from "./ProductComments";
@@ -8,6 +8,8 @@ export default async function Product({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const supabase = createClient();
+
   const { id } = await params;
   const { data: product, error } = await supabase
     .from("products")
