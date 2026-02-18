@@ -8,9 +8,11 @@ import { Menu, MenuItem } from "../ui/menu";
 import { signOut } from "@/services/authService";
 import { redirect } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import Badge from "../ui/badge";
 
-export default function header() {
+export default function header({ cart_count }: { cart_count: number }) {
   const { profile, isAuthenticated } = useAuth();
+
   return (
     <header className="absolute top-0 left-0 w-screen bg-white">
       <div className="container min-h-(--header-height) mx-auto flex items-center justify-between ">
@@ -22,8 +24,10 @@ export default function header() {
           <Link className="flex items-center" href="/favorites">
             <Heart />
           </Link>
-          <Link className="flex items-center" href="/cart">
-            <ShoppingBag />
+          <Link className="flex items-center relative" href="/cart">
+            <Badge value={cart_count}>
+              <ShoppingBag />
+            </Badge>
           </Link>
           {isAuthenticated ? (
             <div>

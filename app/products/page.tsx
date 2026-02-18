@@ -1,4 +1,8 @@
-import { Category, Product } from "@/lib/types/database.types";
+import {
+  Category,
+  Product,
+  ProductWithEffectivePrice,
+} from "@/lib/types/database.types";
 import { createClient } from "@/lib/supabase/client";
 import Sort from "./Sort";
 import Card from "@/components/ui/card";
@@ -81,16 +85,8 @@ export default async function Products({
       <div className="flex gap-6">
         <Sidenav brands={brands || []} categories={categories || []} />
         <div className="grid grid-cols-4 gap-6 flex-6">
-          {products?.map((p: Product) => (
-            <Card
-              key={p.id}
-              name={p.name}
-              image_url={p.image_url}
-              price={p.price}
-              on_sale={p.on_sale}
-              sale_price={p.sale_price}
-              href={`/products/${p.id}`}
-            />
+          {products?.map((p: ProductWithEffectivePrice) => (
+            <Card key={p.id} {...p} href={`/products/${p.id}`} />
           ))}
         </div>
       </div>

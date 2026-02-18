@@ -7,6 +7,7 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { createServer } from "@/lib/supabase/server";
 import { getProfile } from "@/services/authService";
 import { getUserWithProfile } from "@/lib/auth/getUserWithProfile";
+import { getCart } from "@/lib/cart/getCart";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +31,18 @@ export default async function RootLayout({
 }>) {
   const { user, profile } = await getUserWithProfile();
 
+  const { cart } = await getCart();
+  const cart_count =
+    cart?.cart_items.map((item) => item.quantity).reduce((a, b) => a + b, 0) ||
+    0;
+
   return (
     <html lang="pt">
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans mx-auto container overflow-x-hidden antialiased flex flex-col min-h-screen bg-zinc-50 dark:bg-black`}
       >
         <AuthProvider initialUser={user} initialProfile={profile}>
-          <Header />
+          <Header cart_count={cart_count} />
           <div className="pt-(--header-height)">{children}</div>
           <Footer />
         </AuthProvider>

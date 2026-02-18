@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { createServer } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 
 export default async function FavoritesPage() {
-  const supabase = createServer();
+  const supabase = createClient();
 
   const {
     data: { user },
@@ -12,15 +12,15 @@ export default async function FavoritesPage() {
     redirect("/login");
   }
 
-  const { data: favorites } = await supabase
-    .from("favorites")
-    .select("*")
-    .eq("user_id", user.id);
+  // const { data: favorites } = await supabase
+  //   .from("favorites")
+  //   .select("*")
+  //   .eq("user_id", user.id);
 
   return (
     <div>
       <h1>Os teus favoritos</h1>
-      {favorites?.length === 0 && <p>Sem favoritos</p>}
+      {/* {favorites?.length === 0 && <p>Sem favoritos</p>} */}
     </div>
   );
 }

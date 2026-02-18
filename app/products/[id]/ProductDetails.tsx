@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { addToCart } from "@/lib/cart/addToCart";
 import { Product } from "@/lib/types/database.types";
+import { formatPrice } from "@/lib/utils/formatPrice";
 import { useState } from "react";
 
 type ProductStockWIthSize = {
@@ -21,10 +23,17 @@ export default function ProductDetails({
   sizes,
 }: ProductDetailsProps) {
   const [selectedSize, setSelectedSize] = useState<ProductStockWIthSize>();
+  const [error, setError] = useState<string | null>(null);
 
-  const addToCart = () => {
-    if (!selectedSize) return;
-    //TODO adicionar ao carrinho
+  const addItemToCart = async () => {
+    try {
+      setError(null);
+      if (!selectedSize) throw new Error("Nenhum tamanho selecionado");
+      await addToCart(product.id, selectedSize.sizes.id);
+      alert("Produto adicionado ao carrinho");
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   const addToFavorites = () => {
@@ -37,14 +46,14 @@ export default function ProductDetails({
       <div className="flex-3">
         <img
           className="w-full max-h-full aspect-square object-cover"
-          src={product?.image_url}
+          src={product?.image_url || ""}
           alt={product?.name}
         />
       </div>
       <div className="flex flex-2 flex-col gap-6">
         <div>
           <h2 className="text-2xl font-semibold">{product?.name}</h2>
-          <p className="text-2xl">{product?.price} €</p>
+          <p className="text-2xl">{formatPrice(product?.price)}</p>
         </div>
         <div>
           <h3 className="pb-4 font-semibold">Escolha um tamanho disponível</h3>
@@ -65,7 +74,8 @@ export default function ProductDetails({
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <Button size="lg" className="cursor-pointer" onClick={addToCart}>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button size="lg" className="cursor-pointer" onClick={addItemToCart}>
             Adicionar ao carrinho
           </Button>
           <Button
