@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getCart } from "@/lib/cart/getCart";
 import CartItem from "@/components/ui/CartItem";
-import { CartItemWithProduct } from "@/lib/types/cart";
+import { CartItemWithProduct } from "@/lib/types/cart.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
 
@@ -81,7 +81,7 @@ export default async function Cart() {
   };
 
   return (
-    <div className="flex gap-4 min-h-screen p-6 ">
+    <div className="flex gap-4 min-h-screen p-6">
       <div className="flex flex-2 flex-col gap-4">
         <h1 className="text-2xl font-bold">Carrinho</h1>
         {!items?.length && <p>Não tens produtos no carrinho</p>}

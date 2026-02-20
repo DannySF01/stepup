@@ -1,26 +1,17 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import getFavorites from "@/lib/favorites/getFavorites";
+import FavoriteList from "./FavoriteList";
 
 export default async function FavoritesPage() {
-  const supabase = createClient();
+  const { data: favorites, error } = await getFavorites();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
+  if (error) {
+    console.error(error);
   }
 
-  // const { data: favorites } = await supabase
-  //   .from("favorites")
-  //   .select("*")
-  //   .eq("user_id", user.id);
-
   return (
-    <div>
-      <h1>Os teus favoritos</h1>
-      {/* {favorites?.length === 0 && <p>Sem favoritos</p>} */}
+    <div className="flex min-h-screen p-6 flex-col gap-4 max-w-5xl mx-auto">
+      <h1 className="text-2xl font-bold">Os teus favoritos</h1>
+      <FavoriteList initialFavorites={favorites} />
     </div>
   );
 }

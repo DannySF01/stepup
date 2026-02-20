@@ -1,5 +1,5 @@
 import { createServer } from "@/lib/supabase/server";
-import { CartWithItems } from "../types/cart";
+import { CartWithItems } from "../types/cart.types";
 
 export async function getCart() {
   const supabase = await createServer();

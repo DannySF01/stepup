@@ -19,8 +19,6 @@ export async function addToCart(product_id: string, size_id: string) {
 
   if (!cart) return;
 
-  console.log(cart.id);
-
   const { data: item, error } = await supabase
     .from("cart_items")
     .insert({
@@ -32,7 +30,5 @@ export async function addToCart(product_id: string, size_id: string) {
     .eq("cart_id", cart?.id)
     .single();
 
-  console.log(error);
-
-  return item;
+  return { item, error };
 }

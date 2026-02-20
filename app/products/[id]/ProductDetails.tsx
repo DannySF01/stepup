@@ -1,8 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { addToCart } from "@/lib/cart/addToCart";
-import { Product } from "@/lib/types/database.types";
+import addToFavorites from "@/lib/favorites/addToFavorites";
+import { Product } from "@/lib/types/products.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
+import { Heart, HeartCrack } from "lucide-react";
 import { useState } from "react";
 
 type ProductStockWIthSize = {
@@ -16,14 +18,17 @@ type ProductStockWIthSize = {
 type ProductDetailsProps = {
   product: Product;
   sizes: ProductStockWIthSize[];
+  isFav: boolean;
 };
 
 export default function ProductDetails({
   product,
   sizes,
+  isFav,
 }: ProductDetailsProps) {
   const [selectedSize, setSelectedSize] = useState<ProductStockWIthSize>();
   const [error, setError] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(isFav);
 
   const addItemToCart = async () => {
     try {
@@ -36,9 +41,14 @@ export default function ProductDetails({
     }
   };
 
-  const addToFavorites = () => {
-    if (!selectedSize) return;
-    //TODO adicionar aos favoritos
+  const addItemToFavorites = async () => {
+    try {
+      setError(null);
+      setIsFavorite(!isFavorite);
+      await addToFavorites(product.id);
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -73,21 +83,35 @@ export default function ProductDetails({
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button size="lg" className="cursor-pointer" onClick={addItemToCart}>
+          <Button
+            size="lg"
+            className="cursor-pointer flex-4"
+            onClick={addItemToCart}
+          >
             Adicionar ao carrinho
           </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="cursor-pointer"
-            onClick={addToFavorites}
-          >
-            Adicionar aos favoritos
-          </Button>
+          {isFavorite ? (
+            <Button
+              variant="outline"
+              size="lg"
+              className="cursor-pointer flex-1"
+              onClick={addItemToFavorites}
+            >
+              <HeartCrack className="text-red-500" />
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="lg"
+              className="cursor-pointer flex-1"
+              onClick={addItemToFavorites}
+            >
+              <Heart />
+            </Button>
+          )}
         </div>
-
         <div>
           <h3 className="pb-4 font-semibold">Informação do produto</h3>
           {product?.description || "Sem descrição disponivel"}
