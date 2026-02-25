@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { Category, Product } from "@/lib/types/database.types";
+import { Category } from "@/lib/types/database.types";
 import Card from "@/components/ui/card";
 import Banner from "@/components/ui/banner";
+import { Product } from "@/lib/types/products.types";
 
 export default async function Home() {
   const supabase = createClient();

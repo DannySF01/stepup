@@ -1,6 +1,5 @@
 import {
   Category,
-  Product,
   ProductWithEffectivePrice,
 } from "@/lib/types/database.types";
 import { createClient } from "@/lib/supabase/client";

@@ -31,7 +31,7 @@ export default function header({ cart_count }: { cart_count: number }) {
           </Link>
           {isAuthenticated ? (
             <div>
-              <Menu icon={<User />} title={profile?.name || ""}>
+              <Menu className="p-2" icon={<User />} title={profile?.name || ""}>
                 <MenuItem
                   icon={<UserCircle2 />}
                   onClick={() => redirect("/profile")}

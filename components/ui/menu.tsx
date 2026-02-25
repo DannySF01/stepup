@@ -5,10 +5,12 @@ function Menu({
   icon,
   title,
   children,
+  className,
 }: {
   icon: React.ReactNode;
-  title: string;
+  title?: string;
   children: React.ReactNode;
+  className?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -29,9 +31,9 @@ function Menu({
   }, [isOpen]);
 
   return (
-    <div>
+    <div className="my-auto">
       <div
-        className="flex items-center gap-2 cursor-pointer hover:bg-slate-100 p-2 rounded-md"
+        className={`flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         ref={menuRef}
       >

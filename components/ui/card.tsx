@@ -1,8 +1,12 @@
 import Link from "next/link";
-import { ProductWithEffectivePrice } from "@/lib/types/database.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
-interface CardProps extends ProductWithEffectivePrice {
+interface CardProps {
+  name: string | null;
+  image_url: string | null;
+  price: number | null;
+  sale_price: number | null;
+  on_sale: boolean | null;
   href: string;
 }
 export default function Card({

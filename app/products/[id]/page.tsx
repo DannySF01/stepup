@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types/products.types";
 import ProductDetails from "./ProductDetails";
-import ProductComments from "./ProductComments";
+import ProductReviews from "./ProductReviews";
 import isFavorite from "@/lib/favorites/isFavorite";
+import ProductReviewForm from "./ProductReviewForm";
 
 export default async function Product({
   params,
@@ -42,24 +43,15 @@ export default async function Product({
 
   const { data: comments } = await supabase
     .from("comments")
-    .select(
-      `
-    id,
-    content,
-    rating,
-    created_at,
-    user:users (
-      email
-    )
-  `,
-    )
+    .select("*, profiles(*)")
     .eq("product_id", id)
-    .order("created_at", { ascending: false });
+    .order("created_at");
 
   return (
     <div className="flex flex-col m-auto max-w-6xl">
       <ProductDetails product={product} sizes={sizes || []} isFav={isFav} />
-      <ProductComments commments={comments || []} />
+      <ProductReviews comments={comments || []} productId={product.id} />
+      <ProductReviewForm productId={product.id} />
     </div>
   );
 }
