@@ -1,5 +1,5 @@
 import getFavorites from "@/lib/favorites/getFavorites";
-import FavoriteList from "./FavoriteList";
+import FavoriteList from "../../components/favorites/FavoriteList";
 
 export default async function FavoritesPage() {
   const { data: favorites, error } = await getFavorites();

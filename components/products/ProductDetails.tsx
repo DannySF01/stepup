@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { addToCart } from "@/lib/cart/addToCart";
 import addToFavorites from "@/lib/favorites/addToFavorites";
 import { Product } from "@/lib/types/products.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
-import { Heart, HeartCrack } from "lucide-react";
+import { Heart, HeartCrack, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 
 type ProductStockWIthSize = {
@@ -87,10 +87,10 @@ export default function ProductDetails({
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <Button
             size="lg"
-            className="cursor-pointer flex-4"
+            className="cursor-pointer flex-9 font-semibold"
             onClick={addItemToCart}
           >
-            Adicionar ao carrinho
+            <ShoppingBag /> Adicionar ao carrinho
           </Button>
           {isFavorite ? (
             <Button

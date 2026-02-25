@@ -1,11 +1,8 @@
-import {
-  Category,
-  ProductWithEffectivePrice,
-} from "@/lib/types/database.types";
 import { createClient } from "@/lib/supabase/client";
-import Sort from "./Sort";
-import Card from "@/components/ui/card";
-import Sidenav from "@/components/ui/sidenav";
+import Sort from "../../components/ui/Sort";
+import Card from "@/components/ui/Card";
+import Sidenav from "@/components/ui/Sidenav";
+import { ProductWithEffectivePrice } from "@/lib/types/products.types";
 
 export default async function Products({
   searchParams,
@@ -66,10 +63,7 @@ export default async function Products({
 
   const { data: products } = await query;
   const { data: brands } = await supabase.from("brands").select("*");
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("*")
-    .overrideTypes<Array<Category>>();
+  const { data: categories } = await supabase.from("categories").select("*");
 
   const category_name = categories?.find(
     (c) => c.slug === params.category,

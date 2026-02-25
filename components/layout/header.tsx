@@ -1,28 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 import { Heart, LogOut, ShoppingBag, User, UserCircle2 } from "lucide-react";
-import { Menu, MenuItem } from "../ui/menu";
+import { Menu, MenuItem } from "../ui/Menu";
 import { signOut } from "@/services/authService";
 import { redirect } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import Badge from "../ui/badge";
+import Badge from "@/components/ui/Badge";
 
-export default function header({ cart_count }: { cart_count: number }) {
+interface HeaderProps {
+  cart_count: number;
+  fav_count: number;
+}
+export default function header({ cart_count, fav_count }: HeaderProps) {
   const { profile, isAuthenticated } = useAuth();
 
   return (
     <header className="absolute top-0 left-0 w-screen bg-white">
-      <div className="container min-h-(--header-height) mx-auto flex items-center justify-between ">
+      <div className="app-container min-h-(--header-height) mx-auto flex items-center justify-between ">
         <Link className="text-2xl font-bold" href="/">
           StepUp
         </Link>
         <Input className="w-69" placeholder="Pesquisar" />
         <div className="flex gap-4">
           <Link className="flex items-center" href="/favorites">
-            <Heart />
+            <Badge value={fav_count}>
+              <Heart />
+            </Badge>
           </Link>
           <Link className="flex items-center relative" href="/cart">
             <Badge value={cart_count}>

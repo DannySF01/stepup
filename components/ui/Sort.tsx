@@ -1,5 +1,5 @@
 "use client";
-import Select from "@/components/ui/select";
+import Select from "@/components/ui/Select";
 import { useFilters } from "@/hooks/useFilters";
 
 export default function Sort() {

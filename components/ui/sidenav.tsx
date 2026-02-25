@@ -1,15 +1,15 @@
 "use client";
-import Checkbox from "@/components/ui/checkbox";
-import { Field, FieldLegend } from "@/components/ui/field";
-import { Label } from "@/components/ui/label";
+import Checkbox from "@/components/ui/Checkbox";
+import { Field, FieldLegend } from "@/components/ui/Field";
+import { Label } from "@/components/ui/Label";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "./collapsible";
+} from "./Collapsible";
 import { ChevronDownIcon } from "lucide-react";
-import { Brand, Category } from "@/lib/types/database.types";
 import { useFilters } from "@/hooks/useFilters";
+import { Brand, Category } from "@/lib/types/products.types";
 
 export default function Sidenav({
   brands,

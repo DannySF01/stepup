@@ -1,9 +1,9 @@
 "use client";
 import { ActionState, addComment } from "@/actions/addComment";
-import { Button } from "@/components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
-import Rating from "@/components/ui/rating";
-import { useToast } from "@/components/ui/toast";
+import { Button } from "@/components/ui/Button";
+import { Field, FieldLabel } from "@/components/ui/Field";
+import Rating from "@/components/ui/Rating";
+import { useToast } from "@/components/ui/Toast";
 import { useActionState, useEffect, useState } from "react";
 
 interface ProductReviewFormProps {

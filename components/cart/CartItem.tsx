@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import CounterInput from "./CounterInput";
+import CounterInput from "../ui/CounterInput";
 import { createClient } from "@/lib/supabase/client";
-import { Category } from "@/lib/types/database.types";
 import { useRouter } from "next/navigation";
 import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import Link from "next/link";
+import { Category } from "@/lib/types/products.types";
 
 interface CartItemProps {
   id: string;

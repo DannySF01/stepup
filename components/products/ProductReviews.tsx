@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import ProgressBar from "@/components/ui/ProgressBar";
-import Rating from "@/components/ui/rating";
+import Rating from "@/components/ui/Rating";
 import { CommentWithProfile } from "@/lib/types/products.types";
 import { Edit, MoreHorizontal, Trash2, UserCircle } from "lucide-react";
-import { useToast } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/Toast";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
-import { Menu, MenuItem } from "@/components/ui/menu";
+import { Menu, MenuItem } from "@/components/ui/Menu";
 import { useRouter } from "next/navigation";
 
 interface ReviewsProps {

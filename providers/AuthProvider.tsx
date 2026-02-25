@@ -3,9 +3,9 @@
 import { createContext, useEffect, useState } from "react";
 
 import { User } from "@supabase/supabase-js";
-import { Profile } from "@/lib/types/database.types";
 import { createClient } from "@/lib/supabase/client";
 import { getProfile } from "@/services/authService";
+import { Profile } from "@/lib/types/auth.types";
 
 type AuthContextType = {
   user: User | null;
