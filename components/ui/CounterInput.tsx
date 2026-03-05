@@ -3,10 +3,15 @@ import { useState } from "react";
 
 interface CounterInputProps {
   value: number;
+  title?: string;
   onChange: (value: number) => void;
 }
 
-export default function CounterInput({ value, onChange }: CounterInputProps) {
+export default function CounterInput({
+  value,
+  title,
+  onChange,
+}: CounterInputProps) {
   const [amount, setAmount] = useState(value);
 
   function handleDecrease() {
@@ -22,12 +27,12 @@ export default function CounterInput({ value, onChange }: CounterInputProps) {
   }
 
   return (
-    <div className="w-48 max-w-sm relative mt-4">
-      <label className="block mb-1 text-sm text-slate-600">Quantidade</label>
+    <div className="w-24 max-w-sm">
+      <label className="block mb-1 text-sm text-slate-600">{title}</label>
       <div className="relative">
         <button
           id="decreaseButton"
-          className="absolute right-9 top-1 cursor-pointer rounded-md border border-transparent p-1.5 text-center text-sm transition-all text-slate-600 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="absolute left-1 top-1 cursor-pointer rounded-md border border-transparent p-1.5 text-center text-sm transition-all text-slate-600 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
           onClick={handleDecrease}
         >
@@ -43,9 +48,10 @@ export default function CounterInput({ value, onChange }: CounterInputProps) {
         <input
           id="amountInput"
           type="number"
+          placeholder="0"
           value={amount}
           onChange={(e) => setAmount(parseInt(e.target.value))}
-          className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-20 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-full bg-transparent text-center font-semibold border-slate-200 rounded-md text-sm border-0 p-6 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <button
           id="increaseButton"

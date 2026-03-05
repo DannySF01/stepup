@@ -1,12 +1,19 @@
 import { getCart } from "@/lib/cart/getCart";
 import { CartItemWithProduct } from "@/lib/types/cart.types";
 import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
-import CartSidebar from "@/components/cart/CartSidebar";
-import CartTable from "@/components/cart/CartTable";
-
-export default async function Cart() {
+import Breadcrumb from "@/components/ui/Breadcrumb";
+import PaymentForm from "@/components/cart/PaymentForm";
+import PaymentSidebar from "@/components/cart/PaymentSidebar";
+import { createServer } from "@/lib/supabase/server";
+export default async function Payment() {
   const { cart } = await getCart();
   const items = cart?.cart_items as CartItemWithProduct[];
+
+  const supabase = await createServer();
+  const { data: address } = await supabase
+    .from("addresses")
+    .select("*")
+    .single();
 
   function calculateSubtotal(items: CartItemWithProduct[]): number {
     return (
@@ -34,16 +41,17 @@ export default async function Cart() {
   return (
     <div className="flex gap-6 min-h-screen p-6">
       <div className="flex flex-2 flex-col gap-6">
-        <h1 className="text-2xl font-bold">Carrinho</h1>
-        <CartTable items={items} />
+        <Breadcrumb />
+        <PaymentForm address={address} />
       </div>
       <div className="flex-1">
-        <CartSidebar
+        <PaymentSidebar
           subtotal={subtotal}
           total={total}
           discount={total_discount}
           discount_percentage={discount}
           delivery={delivery}
+          items={items}
         />
       </div>
     </div>

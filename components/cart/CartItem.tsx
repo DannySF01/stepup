@@ -49,23 +49,31 @@ export default function CartItem({ id, item, quantity, size }: CartItemProps) {
   );
 
   return (
-    <div className="flex gap-2 p-8 border-b">
-      <img
-        className="w-full max-w-48 aspect-square object-cover"
-        src={item.image_url}
-        alt={item.name}
-      />
-      <div className="flex flex-1 flex-col ">
-        <div className="flex w-full justify-between gap-2 text-lg">
-          <Link href={`/products/${item.id}`}>{item.name} </Link>
-          <p className="font-semibold">{price}</p>
+    <div className="grid grid-cols-4 place-items-center gap-3 py-6 border-b">
+      <div className="flex gap-6 col-span-2 place-self-start">
+        <img
+          className="max-w-32 aspect-square object-cover"
+          src={item.image_url}
+          alt={item.name}
+        />
+        <div className="flex flex-col gap-2">
+          <Link className="font-bold" href={`/products/${item.id}`}>
+            {item.name}
+          </Link>
+          <Link
+            className="font-semibold text-sm"
+            href={`/products?category=${item.categories.slug}`}
+          >
+            {item.categories.name || "Sem categoria"}
+          </Link>
+          <p className="text-muted-foreground text-sm">
+            Tamanho:
+            <span className="text-foreground font-semibold"> {size} EU</span>
+          </p>
         </div>
-        <p className="text-muted-foreground text-sm">
-          {item.categories.name || "Sem categoria"}
-        </p>
-        <p className="text-muted-foreground text-sm">Tamanho {size}</p>
-        <CounterInput value={qtd} onChange={(value) => updateQuantity(value)} />
       </div>
+      <CounterInput value={qtd} onChange={(value) => updateQuantity(value)} />
+      <p className="font-semibold">{price}</p>
     </div>
   );
 }
