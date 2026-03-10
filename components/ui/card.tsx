@@ -18,21 +18,30 @@ export default function Card({
   href,
 }: CardProps) {
   return (
-    <Link href={href}>
+    <Link
+      className="max-w-80 bg-base-100 border rounded-lg bg-card border-border"
+      href={href}
+    >
       <img
-        className="w-full max-w-80 aspect-square object-cover mb-2"
+        className="w-full max-w-80 aspect-square object-cover rounded-t-lg"
         src={image_url || ""}
         alt={name || ""}
       />
-      <h2>{name}</h2>
-      {on_sale ? (
-        <div className="flex gap-2">
-          <p className="text-red-500"> {formatPrice(sale_price)}</p>
-          <p className="line-through"> {formatPrice(price)}</p>
-        </div>
-      ) : (
-        <p>{formatPrice(price)}</p>
-      )}
+      <div className="p-3">
+        <h2 className="text-ellipsis overflow-hidden whitespace-nowrap">
+          {name}
+        </h2>
+        {on_sale ? (
+          <div className="flex gap-2">
+            <p className="font-semibold"> {formatPrice(sale_price)}</p>
+            <p className="line-through text-muted-foreground text-sm self-center">
+              {formatPrice(price)}
+            </p>
+          </div>
+        ) : (
+          <p className="font-semibold">{formatPrice(price)}</p>
+        )}
+      </div>
     </Link>
   );
 }

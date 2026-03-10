@@ -33,10 +33,10 @@ export default function ProfileSidenav() {
     return (
       <div
         onClick={onClick}
-        className={`grid grid-cols-5 gap-2 place-items-center cursor-pointer rounded-md p-3 bg-sidebar-accent hover:bg-sidebar-accent-foreground hover:text-sidebar-primary-foreground transition duration-300 ${
+        className={`grid grid-cols-5 gap-3 place-items-center cursor-pointer rounded-md p-3 ${
           isActive
-            ? "bg-sidebar-accent-foreground text-sidebar-primary-foreground"
-            : ""
+            ? "bg-primary text-primary-foreground"
+            : "bg-card text-card-foreground hover:bg-muted"
         }
         `}
       >

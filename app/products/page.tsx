@@ -77,7 +77,7 @@ export default async function Products({
       </div>
       <div className="flex gap-6">
         <Sidenav brands={brands || []} categories={categories || []} />
-        <div className="grid grid-cols-4 gap-6 flex-6">
+        <div className="grid grid-cols-5 gap-3 h-fit">
           {products?.map((p: ProductWithEffectivePrice) => (
             <Card key={p.id} {...p} href={`/products/${p.id}`} />
           ))}

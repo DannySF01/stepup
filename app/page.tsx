@@ -3,21 +3,30 @@ import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Banner from "@/components/ui/Banner";
 import { Category, Product } from "@/lib/types/products.types";
+import { getUserWithProfile } from "@/lib/auth/getUserWithProfile";
 
 export default async function Home() {
   const supabase = createClient();
+
+  const { profile } = await getUserWithProfile();
+  const gender = profile?.gender || "";
 
   const { data: categories } = await supabase.from("categories").select("*");
   const { data: newArrivals } = await supabase
     .from("products")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(8);
+    .limit(10);
   const { data: featured } = await supabase
     .from("products")
     .select("*")
     .eq("is_featured", true)
-    .limit(8);
+    .limit(10);
+  const { data: forYou } = await supabase
+    .from("products")
+    .select("*")
+    .in("gender", [gender, "unisex"])
+    .limit(10);
 
   return (
     <div>
@@ -25,7 +34,7 @@ export default async function Home() {
         {categories?.map((c: Category) => (
           <Link
             href={`/products?category=${c.slug}`}
-            className="hover:underline-offset-4 hover:underline cursor-pointer"
+            className="hover:underline-offset-6 hover:underline cursor-pointer decoration-primary decoration-2"
             key={c.slug}
           >
             {c.name}
@@ -41,7 +50,7 @@ export default async function Home() {
       />
       <section className="py-6">
         <h2 className="text-2xl font-semibold mb-4">Em destaque</h2>
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-5 gap-3">
           {featured?.map((fp: any) => (
             <Card
               key={fp.id}
@@ -57,8 +66,24 @@ export default async function Home() {
       </section>
       <section className="py-6">
         <h2 className="text-2xl font-semibold mb-4">Novidades</h2>
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-5 gap-3">
           {newArrivals?.map((nap: Product) => (
+            <Card
+              key={nap.id}
+              name={nap.name}
+              image_url={nap.image_url}
+              price={nap.price}
+              on_sale={nap.on_sale}
+              sale_price={nap.sale_price}
+              href={`/products/${nap.id}`}
+            />
+          ))}
+        </div>
+      </section>
+      <section className="py-6">
+        <h2 className="text-2xl font-semibold mb-4">Para voçê</h2>
+        <div className="grid grid-cols-5 gap-3">
+          {forYou?.map((nap: Product) => (
             <Card
               key={nap.id}
               name={nap.name}

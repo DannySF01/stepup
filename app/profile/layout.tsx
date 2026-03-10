@@ -8,9 +8,9 @@ export default async function ProfileLayout({
   return (
     <div className="min-h-screen p-6 space-y-6">
       <h1 className="text-2xl font-bold">Perfil</h1>
-      <div className="grid grid-cols-5 gap-12">
+      <div className="grid grid-cols-5 gap-6">
         <ProfileSidenav />
-        <div className="col-span-4">{children}</div>
+        <div className="col-span-4 bg-card p-6 rounded-md">{children}</div>
       </div>
     </div>
   );

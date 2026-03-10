@@ -133,21 +133,13 @@ export default function ProfileInfo({ profile }: ProfileInfoProps) {
             >
               <FieldLabel>Genero</FieldLabel>
               <Field orientation="horizontal">
-                <RadioGroupItem
-                  value="male"
-                  id="male"
-                  className="data-[state=checked]:border-blue-500"
-                />
+                <RadioGroupItem value="male" id="male" />
                 <FieldLabel htmlFor="male" className="font-normal">
                   Masculino
                 </FieldLabel>
               </Field>
               <Field orientation="horizontal">
-                <RadioGroupItem
-                  value="female"
-                  id="female"
-                  className="data-[state=checked]:border-blue-500"
-                />
+                <RadioGroupItem value="female" id="female" />
                 <FieldLabel htmlFor="female" className="font-normal">
                   Feminino
                 </FieldLabel>

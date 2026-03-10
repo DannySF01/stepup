@@ -74,7 +74,7 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
 
   return (
     <div className="pb-12">
-      <h3 className="text-xl mb-9 font-semibold underline underline-offset-8">
+      <h3 className="text-xl mb-9 font-semibold underline underline-offset-9">
         Avaliações ({comments.length})
       </h3>
       <div className="flex gap-6 pb-12">
@@ -107,7 +107,7 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
           </div>
           <Button
             variant="outline"
-            className="w-full cursor-pointer"
+            className="w-full"
             onClick={handleAddReview}
           >
             Escrever uma avaliação
@@ -116,23 +116,23 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
         <div className="flex-3">
           <div className="flex flex-col gap-6">
             {comments?.length === 0 && (
-              <p className="py-6 text-muted-foreground ">
+              <p className="py-6 text-muted-foreground">
                 Nenhuma avaliação ainda
               </p>
             )}
 
             {comments.map((comment: CommentWithProfile) => (
-              <div key={comment.id} className="bg-gray-100 p-6">
+              <div key={comment.id} className="bg-muted/80 p-6 rounded-md">
                 <div className="flex gap-3 mb-3">
                   <div className="my-auto">
                     {comment.profiles?.avatar_url ? (
                       <img
                         src={comment.profiles?.avatar_url}
                         alt={comment.profiles?.avatar_url}
-                        className="w-8 h-8 rounded-full"
+                        className="w-9 h-9 rounded-full"
                       />
                     ) : (
-                      <UserCircle className="w-8 h-8" />
+                      <UserCircle className="w-9 h-9" />
                     )}
                   </div>
                   <div className="flex-1">

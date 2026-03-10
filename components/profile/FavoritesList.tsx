@@ -48,21 +48,16 @@ export default function FavoritesList({
                 alt={f.products?.name}
               />
               <div className="flex flex-col gap-2">
-                <Link
-                  className="font-bold"
-                  href={`/products/${f.products?.id}`}
-                >
+                <Link className="" href={`/products/${f.products?.id}`}>
                   {f.products?.name}
                 </Link>
                 <Link
-                  className="font-semibold text-sm place-self-start"
+                  className="text-sm place-self-start text-muted-foreground"
                   href={`/products?category=${f.products?.categories?.slug}`}
                 >
-                  {f.products?.categories?.name || "Sem categoria"}
+                  {f.products?.categories?.name}
                 </Link>
-                <p className="font-semibold">
-                  {formatPrice(f.products?.price || 0)}{" "}
-                </p>
+                <p className="">{formatPrice(f.products?.price || 0)} </p>
               </div>
             </div>
             <button

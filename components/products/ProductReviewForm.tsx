@@ -49,17 +49,17 @@ export default function ProductReviewForm({
           name="review"
           rows={4}
           placeholder="Escreva sua avaliação aqui"
-          className="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="p-3 w-full rounded-md shadow-sm sm:text-sm border"
         />
       </Field>
       <Field orientation="vertical">
         <Rating size={6} rating={rating} interactable onClick={onClick} />
       </Field>
-
       <Button
         type="submit"
         disabled={isPending}
-        className="w-full cursor-pointer"
+        size="lg"
+        className="  min-w-50"
       >
         {isPending ? "A enviar avaliação..." : "Enviar avaliação"}
       </Button>

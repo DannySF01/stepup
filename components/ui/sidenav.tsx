@@ -1,6 +1,6 @@
 "use client";
 import Checkbox from "@/components/ui/Checkbox";
-import { Field, FieldLegend } from "@/components/ui/Field";
+import { Field, FieldLabel, FieldLegend } from "@/components/ui/Field";
 import { Label } from "@/components/ui/Label";
 import {
   Collapsible,
@@ -50,14 +50,12 @@ export default function Sidenav({
     children: React.ReactNode;
   }) => {
     return (
-      <Collapsible defaultOpen={defaultOpen} className="py-4 border-t">
-        <CollapsibleTrigger className="flex items-center gap-2 group w-full">
-          <FieldLegend variant="label">
-            <Label>{title}</Label>
-          </FieldLegend>
+      <Collapsible defaultOpen={defaultOpen} className="py-3 border-t">
+        <CollapsibleTrigger className="w-full flex items-center gap-3 group">
+          <div className="text-sm">{title}</div>
           <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
         </CollapsibleTrigger>
-        <CollapsibleContent className="flex flex-col gap-2">
+        <CollapsibleContent className="flex flex-col gap-3 mt-3">
           {children}
         </CollapsibleContent>
       </Collapsible>
@@ -77,9 +75,9 @@ export default function Sidenav({
   }
 
   return (
-    <div className="flex-1">
+    <div className="min-w-48">
       <Collapse defaultOpen title="Genero">
-        <CollapsibleContent className="flex flex-col gap-2">
+        <CollapsibleContent className="flex flex-col gap-1.5">
           {GENDERS.map((g) => (
             <Field key={g.value} orientation="horizontal">
               <Checkbox

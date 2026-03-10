@@ -66,8 +66,8 @@ export default function ProductDetails({
           <p className="text-2xl">{formatPrice(product?.price)}</p>
         </div>
         <div>
-          <h3 className="pb-4 font-semibold">Escolha um tamanho disponível</h3>
-          <div className="flex gap-2">
+          <h3 className="pb-3 font-semibold">Escolha um tamanho disponível</h3>
+          <div className="flex gap-3">
             {sizes?.map((s: ProductStockWIthSize) => (
               <Button
                 disabled={s.stock === 0}
@@ -83,11 +83,11 @@ export default function ProductDetails({
             ))}
           </div>
         </div>
-        <div className="flex gap-2">
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+        <div className="flex gap-3">
+          {error && <p className="text-destructive text-sm">{error}</p>}
           <Button
             size="lg"
-            className="cursor-pointer flex-9 font-semibold"
+            className="flex-9 font-semibold"
             onClick={addItemToCart}
           >
             <ShoppingBag /> Adicionar ao carrinho
@@ -96,16 +96,16 @@ export default function ProductDetails({
             <Button
               variant="outline"
               size="lg"
-              className="cursor-pointer flex-1"
+              className="flex-1"
               onClick={addItemToFavorites}
             >
-              <HeartCrack className="text-red-500" />
+              <HeartCrack className="text-destructive" />
             </Button>
           ) : (
             <Button
               variant="outline"
               size="lg"
-              className="cursor-pointer flex-1"
+              className="flex-1"
               onClick={addItemToFavorites}
             >
               <Heart />
@@ -113,7 +113,7 @@ export default function ProductDetails({
           )}
         </div>
         <div>
-          <h3 className="pb-4 font-semibold">Informação do produto</h3>
+          <h3 className="pb-3 font-semibold">Informação do produto</h3>
           {product?.description || "Sem descrição disponivel"}
         </div>
       </div>

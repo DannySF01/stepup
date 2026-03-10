@@ -33,7 +33,7 @@ function Menu({
   return (
     <div className="my-auto">
       <div
-        className={`flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md ${className}`}
+        className={`flex items-center gap-1.5 cursor-pointer rounded-md ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         ref={menuRef}
       >
@@ -41,7 +41,7 @@ function Menu({
         <p>{title}</p>
       </div>
       {isOpen && (
-        <div className="absolute z-10 min-w-45 overflow-auto rounded-lg border mt-2 border-slate-200 bg-white p-1.5 shadow-sm focus:outline-none">
+        <div className="absolute z-10 min-w-45 overflow-auto rounded-lg border mt-1.5 bg-card p-1.5 shadow-sm focus:outline-none">
           {children}
         </div>
       )}
@@ -63,10 +63,10 @@ function MenuItem({
     <button
       id="menu-item"
       onClick={onClick}
-      className="cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
+      className="flex w-full text-sm items-center rounded-md p-3 transition-all opacity-100 hover:bg-muted"
     >
-      <div className="text-slate-400">{icon}</div>
-      <div className="text-slate-800 font-medium ml-2">{children}</div>
+      <div>{icon}</div>
+      <div className="ml-2">{children}</div>
     </button>
   );
 }

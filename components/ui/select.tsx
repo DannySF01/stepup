@@ -10,12 +10,16 @@ export default function Select({
   return (
     <div className="relative">
       <select
-        className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+        className="w-full text-sm border bg-muted rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-accent hover:border-accent shadow-sm focus:shadow-md appearance-none cursor-pointer"
         value={value}
         onChange={(e) => onchange(e.target.value)}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            className="border-accent"
+          >
             {option.label}
           </option>
         ))}
@@ -26,7 +30,7 @@ export default function Select({
         viewBox="0 0 24 24"
         strokeWidth="1.2"
         stroke="currentColor"
-        className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700"
+        className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-accent-foreground"
       >
         <path
           strokeLinecap="round"

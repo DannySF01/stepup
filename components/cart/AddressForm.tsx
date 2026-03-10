@@ -87,7 +87,7 @@ export default function AddressForm({
                         <RadioGroupItem value={address.id} id={address.id} />
                         <Trash
                           onClick={() => removeAddress(address.id)}
-                          className="h-4 w-4 text-muted-foreground hover:text-destructive transition-colors duration-200"
+                          className="h-4 w-4 hover:text-destructive"
                         />
                       </div>
                     </Field>
@@ -96,6 +96,8 @@ export default function AddressForm({
               </RadioGroup>
             )}
             <Button
+              className="rounded-md"
+              size="lg"
               variant="outline"
               onClick={(e) => {
                 e.preventDefault();
@@ -236,7 +238,12 @@ export default function AddressForm({
                   </Field>
                 </Field>
               </FieldGroup>
-              <Button form="address-form" type="submit">
+              <Button
+                form="address-form"
+                className="rounded-md"
+                size="lg"
+                type="submit"
+              >
                 Guardar Morada
               </Button>
             </FieldSet>
