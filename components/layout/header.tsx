@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
 import {
   Heart,
   LogOut,
@@ -16,6 +15,7 @@ import { signOut } from "@/services/authService";
 import { redirect } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Badge from "@/components/ui/Badge";
+import Search from "../ui/Search";
 
 interface HeaderProps {
   cart_count: number;
@@ -44,7 +44,7 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
         <Link className="text-2xl font-bold" href="/">
           Step<span className="text-primary">Up</span>
         </Link>
-        <Input className="w-69" placeholder="Pesquisar" />
+        <Search />
         <div className="flex gap-4 items-center">
           <SunMoonIcon
             className="cursor-pointer hover:text-primary"

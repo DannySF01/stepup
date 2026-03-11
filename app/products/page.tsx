@@ -8,6 +8,7 @@ export default async function Products({
   searchParams,
 }: {
   searchParams: Promise<{
+    q: string;
     sale: boolean;
     sort: string;
     category: string;
@@ -59,6 +60,10 @@ export default async function Products({
     case "desc":
       query = query.order("effective_price", { ascending: false });
       break;
+  }
+
+  if (params.q) {
+    query = query.textSearch("name", params.q);
   }
 
   const { data: products } = await query;

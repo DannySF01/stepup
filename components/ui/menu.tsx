@@ -66,7 +66,7 @@ function MenuItem({
       className="flex w-full text-sm items-center rounded-md p-3 transition-all opacity-100 hover:bg-muted"
     >
       <div>{icon}</div>
-      <div className="ml-2">{children}</div>
+      <div className="ml-2 whitespace-nowrap">{children}</div>
     </button>
   );
 }
