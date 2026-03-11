@@ -16,7 +16,7 @@ export default function Banner({
   imageUrl,
 }: BannerProps) {
   return (
-    <section className="relative h-64 md:h-80 rounded-xl overflow-hidden flex items-center border">
+    <section className="relative h-64 md:h-70 rounded-xl overflow-hidden flex items-center border">
       {imageUrl && (
         <img
           src={imageUrl}

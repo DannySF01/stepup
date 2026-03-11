@@ -69,9 +69,22 @@
   --color-ring: var(--ring);
 }
 
+@theme {
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+}
+
 @layer base {
   body {
-    --header-height: 5rem;
+    --header-height: 7rem;
     --border-radius: 0.5rem;
     @apply bg-background text-foreground overflow-x-hidden antialiased transition-colors duration-300 tracking-wide;
 

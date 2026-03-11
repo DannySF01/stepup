@@ -26,7 +26,21 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
 
   return (
     <header className="absolute top-0 left-0 w-screen">
-      <div className="app-container min-h-(--header-height) mx-auto flex items-center justify-between ">
+      <div className="relative flex overflow-x-hidden bg-primary py-1.5 text-white text-sm tracking-widest">
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-primary to-transparent z-10"></div>
+        <div className="flex min-w-full shrink-0 animate-marquee items-center justify-around gap-12 pl-12">
+          <span>🔥 SALDOS ATÉ 50% EM PRODUTOS SELECIONADOS</span>
+          <span>📦 PORTES GRÁTIS EM TODAS AS ENCOMENDAS</span>
+          <span>⭐ MAIS DE 5.000 CLIENTES SATISFEITOS</span>
+        </div>
+        <div className="flex min-w-full shrink-0 animate-marquee items-center justify-around gap-12 pl-12">
+          <span>🔥 SALDOS ATÉ 50% EM PRODUTOS SELECIONADOS</span>
+          <span>📦 PORTES GRÁTIS EM TODAS AS ENCOMENDAS</span>
+          <span>⭐ MAIS DE 5.000 CLIENTES SATISFEITOS</span>
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-primary to-transparent z-10"></div>
+      </div>
+      <div className="app-container min-h-20 mx-auto flex items-center justify-between ">
         <Link className="text-2xl font-bold" href="/">
           Step<span className="text-primary">Up</span>
         </Link>

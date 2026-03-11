@@ -9,6 +9,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import getFavorites from "@/lib/favorites/getFavorites";
 
 import { Poppins } from "next/font/google";
+import Topbar from "@/components/layout/topbar";
 
 const font = Poppins({
   weight: ["400", "700"],
@@ -44,7 +45,7 @@ export default async function RootLayout({
         <AuthProvider initialUser={user} initialProfile={profile}>
           <ToastProvider>
             <Header cart_count={cart_count} fav_count={fav_count} />
-            <div className="pt-(--header-height)">{children}</div>
+            <div className="mt-(--header-height)">{children}</div>
             <Footer />
           </ToastProvider>
         </AuthProvider>

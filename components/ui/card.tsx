@@ -24,8 +24,8 @@ export default function Card({
     >
       <img
         className="w-full max-w-80 aspect-square object-cover rounded-t-lg"
-        src={image_url || ""}
-        alt={name || ""}
+        src={image_url || undefined}
+        alt={undefined}
       />
       <div className="p-3">
         <h2 className="text-ellipsis overflow-hidden whitespace-nowrap">
