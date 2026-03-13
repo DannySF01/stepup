@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types/products.types";
-import ProductDetails from "../../../components/products/ProductDetails";
-import ProductReviews from "../../../components/products/ProductReviews";
 import isFavorite from "@/lib/favorites/isFavorite";
-import ProductReviewForm from "../../../components/products/ProductReviewForm";
+import ProductDetails from "@/components/products/ProductDetails";
+import ProductReviews from "@/components/products/ProductReviews";
+import ProductReviewForm from "@/components/products/ProductReviewForm";
 
 export default async function Product({
   params,

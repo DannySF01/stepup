@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import Sort from "../../components/ui/Sort";
+import Sort from "@/components/ui/Sort";
 import Card from "@/components/ui/Card";
 import Sidenav from "@/components/ui/Sidenav";
 import { ProductWithEffectivePrice } from "@/lib/types/products.types";

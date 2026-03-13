@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Badge from "@/components/ui/Badge";
 import Search from "../ui/Search";
+import Topbar from "./topbar";
 
 interface HeaderProps {
   cart_count: number;
@@ -26,20 +27,7 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
 
   return (
     <header className="absolute top-0 left-0 w-screen">
-      <div className="relative flex overflow-x-hidden bg-primary py-1.5 text-white text-sm tracking-widest">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-primary to-transparent z-10"></div>
-        <div className="flex min-w-full shrink-0 animate-marquee items-center justify-around gap-12 pl-12">
-          <span>🔥 SALDOS ATÉ 50% EM PRODUTOS SELECIONADOS</span>
-          <span>📦 PORTES GRÁTIS EM TODAS AS ENCOMENDAS</span>
-          <span>⭐ MAIS DE 5.000 CLIENTES SATISFEITOS</span>
-        </div>
-        <div className="flex min-w-full shrink-0 animate-marquee items-center justify-around gap-12 pl-12">
-          <span>🔥 SALDOS ATÉ 50% EM PRODUTOS SELECIONADOS</span>
-          <span>📦 PORTES GRÁTIS EM TODAS AS ENCOMENDAS</span>
-          <span>⭐ MAIS DE 5.000 CLIENTES SATISFEITOS</span>
-        </div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-primary to-transparent z-10"></div>
-      </div>
+      <Topbar />
       <div className="app-container min-h-20 mx-auto flex items-center justify-between ">
         <Link className="text-2xl font-bold" href="/">
           Step<span className="text-primary">Up</span>
@@ -81,6 +69,9 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
                 </MenuItem>
                 <MenuItem icon={<TruckIcon />}>
                   <Link href="/profile/my-orders">Pedidos</Link>
+                </MenuItem>
+                <MenuItem icon={<UserCircle2 />}>
+                  <Link href="/admin">Admin Dashboard</Link>
                 </MenuItem>
                 <MenuItem icon={<LogOut />} onClick={signOut}>
                   Terminar Sessão
