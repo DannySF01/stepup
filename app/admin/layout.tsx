@@ -1,7 +1,7 @@
 import { getUserWithProfile } from "@/lib/auth/getUserWithProfile";
-import Dashboard from "./page";
 import { redirect } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import { ToastProvider } from "@/components/ui/Toast";
 
 export default async function AdminLayout({
   children,
@@ -14,8 +14,10 @@ export default async function AdminLayout({
 
   return (
     <div className="flex">
-      <AdminSidebar user={user} profile={profile} />
-      <div className="p-6">{children}</div>
+      <ToastProvider>
+        <AdminSidebar user={user} profile={profile} />
+        <div className="p-9 w-full">{children}</div>
+      </ToastProvider>
     </div>
   );
 }

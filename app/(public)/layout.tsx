@@ -3,7 +3,6 @@ import Header from "@/components/layout/header";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { getUserWithProfile } from "@/lib/auth/getUserWithProfile";
 import { getCart } from "@/lib/cart/getCart";
-import { ToastProvider } from "@/components/ui/Toast";
 import getFavorites from "@/lib/favorites/getFavorites";
 
 export default async function RootLayout({
@@ -25,11 +24,9 @@ export default async function RootLayout({
   return (
     <div className="min-h-screen mx-auto app-container flex flex-col">
       <AuthProvider initialUser={user} initialProfile={profile}>
-        <ToastProvider>
-          <Header cart_count={cart_count} fav_count={fav_count} />
-          <div className="mt-(--header-height)">{children}</div>
-          <Footer />
-        </ToastProvider>
+        <Header cart_count={cart_count} fav_count={fav_count} />
+        <div className="mt-(--header-height)">{children}</div>
+        <Footer />
       </AuthProvider>
     </div>
   );

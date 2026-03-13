@@ -22,3 +22,7 @@ export type ProductWithEffectivePrice =
   Database["public"]["Views"]["products_with_effective_price"]["Row"];
 
 export type ProductSize = Database["public"]["Tables"]["product_sizes"]["Row"];
+
+export type Size = Database["public"]["Tables"]["sizes"]["Row"];
+
+export type ProductSizeWithSize = ProductSize & { sizes: Size | null };

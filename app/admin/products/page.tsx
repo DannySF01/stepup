@@ -14,7 +14,7 @@ export default async function AdminProducts() {
     .select("*");
 
   return (
-    <div className="bg-card p-6 rounded-md space-y-6">
+    <div className="bg-card p-9 rounded-md space-y-6">
       <h1 className="text-xl ">Produtos</h1>
       <AdminProductsTable products={products} product_sizes={product_sizes} />
     </div>

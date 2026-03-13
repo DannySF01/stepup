@@ -10,7 +10,7 @@ export default function Select({
   return (
     <div className="relative">
       <select
-        className="w-full text-sm border bg-muted rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-accent hover:border-accent shadow-sm focus:shadow-md appearance-none cursor-pointer"
+        className="w-full text-sm border rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-accent hover:border-accent shadow-sm focus:shadow-md appearance-none cursor-pointer"
         value={value}
         onChange={(e) => onchange(e.target.value)}
       >
