@@ -1,6 +1,7 @@
 "use server";
 
 import { createServer } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export default async function updateProduct(
   id: string,
@@ -18,6 +19,8 @@ export default async function updateProduct(
     description: formData.get("description")?.toString(),
     price: Number(formData.get("price")),
     image_url: formData.get("image_url")?.toString(),
+    category_id: formData.get("category")?.toString() || "",
+    brand_id: formData.get("brand")?.toString() || "",
   };
 
   console.log(updatedProduct);
@@ -31,6 +34,8 @@ export default async function updateProduct(
     console.error(error.message);
     return { success: false, message: "Ocorreu um erro" };
   }
+
+  revalidatePath("/admin/products/[id]");
 
   return { success: true, message: "Produto atualizado com sucesso" };
 }

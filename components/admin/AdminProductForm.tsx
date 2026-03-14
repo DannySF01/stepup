@@ -19,6 +19,7 @@ import { useActionState, useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import updateProduct from "@/actions/admin/updateProduct";
 import { useToast } from "../ui/Toast";
+import { Package } from "lucide-react";
 
 interface AdminProductFormProps {
   product: ProductWithCategoryAndBrand;
@@ -34,6 +35,7 @@ export default function AdminProductForm({
 }: AdminProductFormProps) {
   const [category, setCategory] = useState(product.categories?.id);
   const [brand, setBrand] = useState(product.brands?.id);
+  const [imageUrl, setImageUrl] = useState(product.image_url);
 
   const { toast } = useToast();
 
@@ -42,7 +44,7 @@ export default function AdminProductForm({
 
   const categoryOptions = [
     {
-      value: null,
+      value: "",
       label: "Selecione uma categoria",
     },
     ...categories?.map((category) => ({
@@ -53,7 +55,7 @@ export default function AdminProductForm({
 
   const brandOptions = [
     {
-      value: null,
+      value: "",
       label: "Selecione uma marca",
     },
     ...brands?.map((brand) => ({
@@ -70,6 +72,20 @@ export default function AdminProductForm({
     }
   }, [state]);
 
+  const ProductImage = ({ url }: { url?: string | null }) => (
+    <div className="w-32 h-32">
+      {url ? (
+        <img
+          src={url}
+          alt=""
+          className="aspect-square rounded-md object-cover"
+        />
+      ) : (
+        <Package className="w-full h-full p-3 aspect-square rounded-md object-cover" />
+      )}
+    </div>
+  );
+
   return (
     <div>
       <form action={formAction}>
@@ -77,16 +93,14 @@ export default function AdminProductForm({
           <FieldLegend>Detalhes do produto</FieldLegend>
           <FieldGroup>
             <Field orientation="horizontal">
-              <img
-                src={product.image_url || ""}
-                className="max-w-32 aspect-square rounded-md object-cover"
-              />
+              <ProductImage url={imageUrl} />
               <Field>
                 <FieldLabel htmlFor="image_url">URL da imagem</FieldLabel>
                 <Input
                   name="image_url"
                   id="image_url"
                   defaultValue={product.image_url || ""}
+                  onChange={(e) => setImageUrl(e.target.value)}
                 />
               </Field>
             </Field>
@@ -110,6 +124,7 @@ export default function AdminProductForm({
             <Field>
               <FieldLabel htmlFor="category">Categoria</FieldLabel>
               <Select
+                name="category"
                 value={category || ""}
                 options={categoryOptions}
                 onchange={(value) => setCategory(value)}
@@ -119,6 +134,7 @@ export default function AdminProductForm({
             <Field>
               <FieldLabel htmlFor="brand">Marca</FieldLabel>
               <Select
+                name="brand"
                 value={brand || ""}
                 options={brandOptions}
                 onchange={(value) => setBrand(value)}

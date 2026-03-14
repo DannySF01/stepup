@@ -1,8 +1,10 @@
 export default function Select({
+  name,
   value,
   options,
   onchange,
 }: {
+  name?: string;
   value: string;
   options: { label: string; value: string }[];
   onchange: (value: string) => void;
@@ -13,6 +15,7 @@ export default function Select({
         className="w-full text-sm border rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-accent hover:border-accent shadow-sm focus:shadow-md appearance-none cursor-pointer"
         value={value}
         onChange={(e) => onchange(e.target.value)}
+        name={name}
       >
         {options.map((option) => (
           <option

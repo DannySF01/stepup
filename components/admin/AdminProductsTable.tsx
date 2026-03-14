@@ -34,7 +34,7 @@ export default function AdminProductsTable({
   const goToPage = (pageNumber: number) => {
     const params = new URLSearchParams();
     params.set("page", pageNumber.toString());
-    router.push("?" + params.toString());
+    router.push("?" + params.toString(), { scroll: false });
   };
 
   useEffect(() => {
