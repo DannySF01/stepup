@@ -20,7 +20,7 @@ export default async function AdminProduct({ params }: AdminProductProps) {
 
   const { data: products } = await supabase
     .from("products")
-    .select("*, categories!inner(*), brands!inner(*)")
+    .select("*, categories(*), brands(*)")
     .eq("id", id)
     .single();
 
@@ -28,7 +28,7 @@ export default async function AdminProduct({ params }: AdminProductProps) {
 
   const { data: product_sizes } = await supabase
     .from("product_sizes")
-    .select("*, sizes!inner(*)")
+    .select("*, sizes(*)")
     .eq("product_id", id);
 
   if (!product_sizes) return null;

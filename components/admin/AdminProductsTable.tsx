@@ -4,29 +4,60 @@ import {
   ProductWithCategoryAndBrand,
 } from "@/lib/types/products.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
-import { useState } from "react";
-import { Edit2Icon, StarIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { StarIcon } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import useDebounce from "@/hooks/useDebounce";
+import { useEffect, useState } from "react";
+import Pagination from "../ui/Pagination";
 
 interface AdminProductsTableProps {
   products: ProductWithCategoryAndBrand[] | null;
   product_sizes: ProductSize[] | null;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+  };
+  search: string;
 }
 
 export default function AdminProductsTable({
   products,
   product_sizes,
+  pagination,
+  search,
 }: AdminProductsTableProps) {
-  const [search, setSearch] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(search);
+  const [debouncedSearch] = useDebounce(searchTerm, 500);
+
+  const goToPage = (pageNumber: number) => {
+    const params = new URLSearchParams();
+    params.set("page", pageNumber.toString());
+    router.push("?" + params.toString());
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    if (debouncedSearch) {
+      params.set("q", debouncedSearch);
+    } else {
+      params.delete("q");
+    }
+
+    params.set("page", "1");
+
+    router.push("?" + params.toString());
+  }, [debouncedSearch]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-6">
       <div>
         <input
           type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-80 bg-transparent text-sm border rounded-md pr-12 pl-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow focus:border-accent hover:border-accent"
           placeholder="Pesquisar..."
         />
@@ -71,6 +102,7 @@ export default function AdminProductsTable({
           ))}
         </div>
       </div>
+      <Pagination pagination={pagination} onPageChange={goToPage} />
     </div>
   );
 }

@@ -40,15 +40,27 @@ export default function AdminProductForm({
   const boundAction = updateProduct.bind(null, product.id);
   const [state, formAction, pending] = useActionState(boundAction, null);
 
-  const categoryOptions = categories?.map((category) => ({
-    value: category.id,
-    label: category.name,
-  }));
+  const categoryOptions = [
+    {
+      value: null,
+      label: "Selecione uma categoria",
+    },
+    ...categories?.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })),
+  ];
 
-  const brandOptions = brands?.map((brand) => ({
-    value: brand.id,
-    label: brand.name,
-  }));
+  const brandOptions = [
+    {
+      value: null,
+      label: "Selecione uma marca",
+    },
+    ...brands?.map((brand) => ({
+      value: brand.id,
+      label: brand.name,
+    })),
+  ];
 
   useEffect(() => {
     if (state?.message) {
