@@ -39,7 +39,7 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
     );
   }
 
-  function handleAddReview() {
+  async function handleAddReview() {
     if (!profile)
       return toast({
         title: "Erro",
@@ -53,6 +53,33 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
         variant: "error",
         description: "Já tem uma avaliação para este produto",
       });
+    } else {
+      // verifica se comprou o produto supabase
+      const { data: orders, error } = await supabase
+        .from("orders")
+        .select("*, order_items(*)")
+        .eq("user_id", profile.id);
+
+      if (!orders) {
+        console.error("Ocorreu um erro ao buscar os pedidos", error);
+        return toast({
+          variant: "error",
+          description: "Ocorreu um erro, tente novamente mais tarde",
+        });
+      }
+
+      if (
+        !orders.some((order) =>
+          order.order_items.some((item) => item.product_id === productId),
+        )
+      ) {
+        return toast({
+          variant: "error",
+          description: "Só pode avaliar produtos que comprou",
+        });
+      }
+
+      router.push(`/products/${productId}/new`);
     }
   }
 
@@ -70,6 +97,10 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
       title: "Sucesso",
       description: "Avaliação removida com sucesso",
     });
+  }
+
+  function handleEditComment() {
+    router.push(`/products/${productId}/edit`);
   }
 
   return (
@@ -117,7 +148,7 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
           <div className="flex flex-col gap-6">
             {comments?.length === 0 && (
               <p className="py-6 text-muted-foreground">
-                Nenhuma avaliação ainda
+                Ainda não existe uma avaliação para este produto
               </p>
             )}
 
@@ -142,7 +173,10 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
                         {profile?.id === comment.user_id && (
                           <Menu icon={<MoreHorizontal className="w-4 h-4" />}>
                             <div className="flex flex-col gap-2 items-center">
-                              <MenuItem icon={<Edit className="w-4 h-4" />}>
+                              <MenuItem
+                                icon={<Edit className="w-4 h-4" />}
+                                onClick={() => handleEditComment()}
+                              >
                                 Editar
                               </MenuItem>
                               <MenuItem

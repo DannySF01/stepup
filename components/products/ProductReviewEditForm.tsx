@@ -1,27 +1,30 @@
 "use client";
-import { ActionState, addReview } from "@/actions/addReview";
+import { ActionState, editReview } from "@/actions/editReview";
 import { Button } from "@/components/ui/Button";
 import { Field, FieldLabel } from "@/components/ui/Field";
 import Rating from "@/components/ui/Rating";
 import { useToast } from "@/components/ui/Toast";
+import { Comment } from "@/lib/types/products.types";
 import { useActionState, useEffect, useState } from "react";
 
-interface ProductReviewFormProps {
+interface ProductReviewEditFormProps {
   productId: string;
+  comment: Comment;
 }
 
 const initialState: ActionState = { success: false, message: "" };
 
-export default function ProductReviewForm({
+export default function ProductReviewEditForm({
   productId,
-}: ProductReviewFormProps) {
-  const [rating, setRating] = useState(0);
+  comment,
+}: ProductReviewEditFormProps) {
+  const [rating, setRating] = useState(comment.rating || 0);
 
   function onClick(rating: number) {
     setRating(rating);
   }
 
-  const boundAction = addReview.bind(null, productId, rating);
+  const boundAction = editReview.bind(null, productId, comment.id, rating);
 
   const [state, formAction, isPending] = useActionState(
     boundAction,
@@ -52,6 +55,7 @@ export default function ProductReviewForm({
           id="review"
           name="review"
           rows={8}
+          defaultValue={comment.comment}
           placeholder="Escreva sua avaliação aqui"
           className="p-3 w-full rounded-md shadow-sm sm:text-sm border"
         />

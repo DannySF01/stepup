@@ -3,7 +3,6 @@ import type { Product } from "@/lib/types/products.types";
 import isFavorite from "@/lib/favorites/isFavorite";
 import ProductDetails from "@/components/products/ProductDetails";
 import ProductReviews from "@/components/products/ProductReviews";
-import ProductReviewForm from "@/components/products/ProductReviewForm";
 
 export default async function Product({
   params,
@@ -51,7 +50,6 @@ export default async function Product({
     <div className="flex flex-col m-auto max-w-6xl">
       <ProductDetails product={product} sizes={sizes || []} isFav={isFav} />
       <ProductReviews comments={comments || []} productId={product.id} />
-      <ProductReviewForm productId={product.id} />
     </div>
   );
 }

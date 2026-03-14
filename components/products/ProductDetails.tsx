@@ -5,7 +5,8 @@ import addToFavorites from "@/lib/favorites/addToFavorites";
 import { Product } from "@/lib/types/products.types";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import { Heart, HeartCrack, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useToast } from "../ui/Toast";
 
 type ProductStockWIthSize = {
   stock: number;
@@ -30,6 +31,8 @@ export default function ProductDetails({
   const [error, setError] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(isFav);
 
+  const { toast } = useToast();
+
   const addItemToCart = async () => {
     try {
       setError(null);
@@ -51,6 +54,11 @@ export default function ProductDetails({
     }
   };
 
+  useEffect(() => {
+    if (error) toast({ description: error, variant: "error" });
+    setError(null);
+  }, [error]);
+
   return (
     <div className="flex w-full gap-6 py-12">
       <div className="flex-3">
@@ -66,7 +74,7 @@ export default function ProductDetails({
           <p className="text-2xl">{formatPrice(product?.price)}</p>
         </div>
         <div>
-          <h3 className="pb-3 font-semibold">Escolha um tamanho disponível</h3>
+          <h3 className="pb-3 font-semibold">Tamanhos</h3>
           <div className="flex gap-3">
             {sizes?.map((s: ProductStockWIthSize) => (
               <Button
@@ -81,10 +89,14 @@ export default function ProductDetails({
                 EU {s.sizes.value}
               </Button>
             ))}
+            {sizes?.length === 0 && (
+              <p className="text-destructive">
+                Produto indisponivel no momento
+              </p>
+            )}
           </div>
         </div>
         <div className="flex gap-3">
-          {error && <p className="text-destructive text-sm">{error}</p>}
           <Button
             size="lg"
             className="flex-9 font-semibold"
@@ -92,6 +104,7 @@ export default function ProductDetails({
           >
             <ShoppingBag /> Adicionar ao carrinho
           </Button>
+
           {isFavorite ? (
             <Button
               variant="outline"

@@ -1,15 +1,16 @@
 "use server";
 
 import { createServer } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export type ActionState = {
   success: boolean;
   message: string;
 };
 
-export async function addComment(
+export async function editReview(
   productId: string,
+  commentId: string,
   rating: number,
   _: ActionState | null,
   formData: FormData,
@@ -21,28 +22,21 @@ export async function addComment(
     return { success: false, message: "Preencha todos os campos" };
   }
 
-  const { error } = await supabase.from("comments").insert({
-    comment: review,
-    rating: rating,
-    product_id: productId,
-  });
-
-  if (error?.code === "23505") {
-    return {
-      success: false,
-      message: "Já tem uma avaliação para este produto",
-    };
-  }
+  const { error } = await supabase
+    .from("comments")
+    .update({
+      comment: review,
+      rating: rating,
+    })
+    .eq("id", commentId);
 
   if (error) {
     console.error(error.message);
     return {
       success: false,
-      message: "Erro ao enviar avaliação",
+      message: "Erro ao editar avaliação",
     };
   }
 
-  revalidatePath(`/products/${productId}`);
-
-  return { success: true, message: "Avaliação enviada com sucesso" };
+  redirect(`/products/${productId}`);
 }
