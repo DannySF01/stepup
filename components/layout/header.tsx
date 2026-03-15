@@ -67,11 +67,17 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
                 >
                   Perfil
                 </MenuItem>
-                <MenuItem icon={<TruckIcon />}>
-                  <Link href="/profile/my-orders">Pedidos</Link>
+                <MenuItem
+                  icon={<TruckIcon />}
+                  onClick={() => redirect("/profile/my-orders")}
+                >
+                  Pedidos
                 </MenuItem>
-                <MenuItem icon={<UserCircle2 />}>
-                  <Link href="/admin">Admin Dashboard</Link>
+                <MenuItem
+                  icon={<UserCircle2 />}
+                  onClick={() => redirect("/admin")}
+                >
+                  Admin Dashboard
                 </MenuItem>
                 <MenuItem icon={<LogOut />} onClick={signOut}>
                   Terminar Sessão

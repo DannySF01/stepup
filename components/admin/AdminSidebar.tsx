@@ -72,7 +72,7 @@ export default function AdminSidebar({ user, profile }: AdminSidebarProps) {
             icon={<TruckIcon />}
             href="/admin/deliveries"
           />
-          <NavItem label="Clientes" icon={<Users />} href="/admin/customers" />
+          <NavItem label="Utilizadores" icon={<Users />} href="/admin/users" />
         </nav>
         <div className="mt-9">
           <NavItem label="Voltar a loja" icon={<MoveLeft />} href="/" />

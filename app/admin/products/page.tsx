@@ -1,5 +1,6 @@
 import AdminProductsTable from "@/components/admin/AdminProductsTable";
 import { createServer } from "@/lib/supabase/server";
+import { getPagination, getTotalPages } from "@/lib/utils/pagination";
 
 interface AdminProductsProps {
   searchParams: Promise<{
@@ -14,10 +15,7 @@ export default async function AdminProducts({
   const { page, q } = await searchParams;
 
   // Pagination
-  const PAGE_SIZE = 10;
-  const currentPage = Number(page) || 1;
-  const from = (currentPage - 1) * PAGE_SIZE;
-  const to = from + PAGE_SIZE - 1;
+  const { from, to, currentPage } = getPagination(page);
 
   // Queries
   const supabase = await createServer();
@@ -33,7 +31,8 @@ export default async function AdminProducts({
     .from("product_sizes")
     .select("*");
 
-  const totalPages = Math.ceil((count || 0) / PAGE_SIZE);
+  // Pagination
+  const totalPages = getTotalPages(count);
 
   return (
     <div className="bg-card p-9 rounded-md space-y-6">
