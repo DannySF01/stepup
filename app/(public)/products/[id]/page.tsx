@@ -14,31 +14,17 @@ export default async function Product({
   const { id } = await params;
   const { data: product, error } = await supabase
     .from("products")
-    .select("*")
+    .select("*, product_sizes(*, sizes!inner(*))")
     .eq("id", id)
-    .single<Product>();
+    .order("sizes(value)", {
+      referencedTable: "product_sizes",
+      ascending: true,
+    })
+    .single();
 
-  if (!product) throw new Error("Produto nao encontrado");
+  if (!product || error) throw new Error("Produto não encontrado");
 
   const isFav = await isFavorite(product.id);
-
-  if (error || !product) {
-    throw new Error("Produto não encontrado");
-  }
-
-  const { data: sizes } = await supabase
-    .from("product_sizes")
-    .select(
-      `
-    stock,
-    sizes (
-      id,
-      value
-    )
-  `,
-    )
-    .eq("product_id", id)
-    .order("sizes(value)", { ascending: true });
 
   const { data: comments } = await supabase
     .from("comments")
@@ -47,8 +33,8 @@ export default async function Product({
     .order("created_at");
 
   return (
-    <div className="flex flex-col m-auto max-w-6xl">
-      <ProductDetails product={product} sizes={sizes || []} isFav={isFav} />
+    <div className="flex flex-col m-auto max-w-7xl">
+      <ProductDetails product={product} isFav={isFav} />
       <ProductReviews comments={comments || []} productId={product.id} />
     </div>
   );

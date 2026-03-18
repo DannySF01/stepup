@@ -1,4 +1,4 @@
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { Button } from "../ui/Button";
 import Link from "next/link";
 
@@ -22,19 +22,19 @@ export default function CartSidebar({
       <h1 className="text-2xl font-bold">Resumo do pedido</h1>
       <div className="flex justify-between">
         <p>Subtotal</p>
-        <span className="font-semibold">{formatPrice(subtotal)}</span>
+        <span className="font-semibold">{formatToCurrency(subtotal)}</span>
       </div>
       <div className="flex justify-between">
         <p>Taxas de entrega</p>
-        <span className="font-semibold ">{formatPrice(delivery)}</span>
+        <span className="font-semibold ">{formatToCurrency(delivery)}</span>
       </div>
       <div className="flex justify-between">
         <p>Desconto ({discount_percentage}% Boas Vindas)</p>
-        <span className="font-semibold"> -{formatPrice(discount)}</span>
+        <span className="font-semibold"> -{formatToCurrency(discount)}</span>
       </div>
       <div className="flex justify-between border-t py-4">
         <p className="font-bold">Total</p>
-        <span className="font-bold">{formatPrice(total)}</span>
+        <span className="font-bold">{formatToCurrency(total)}</span>
       </div>
       <Link href="/cart/shipping">
         <Button className="w-full font-bold py-6 cursor-pointer">

@@ -26,3 +26,7 @@ export type ProductSize = Database["public"]["Tables"]["product_sizes"]["Row"];
 export type Size = Database["public"]["Tables"]["sizes"]["Row"];
 
 export type ProductSizeWithSize = ProductSize & { sizes: Size | null };
+
+export type ProductWithSizes = Product & {
+  product_sizes: ProductSizeWithSize[];
+};

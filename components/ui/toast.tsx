@@ -12,7 +12,7 @@ type ToastType = {
   id: string;
   title?: string;
   description?: string;
-  variant?: "default" | "error";
+  variant?: "default" | "error" | "info";
 };
 
 type ToastContextType = {
@@ -75,7 +75,7 @@ function AnimatedToast({
   return (
     <div
       role="alert"
-      className={`mt-3 relative flex w-full p-3 text-sm text-white rounded-md transform transition-all duration-300 ease-out ${toast.variant === "error" ? "bg-destructive" : "bg-primary"} ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-5"}`}
+      className={`mt-3 relative flex w-full p-3 text-sm text-white rounded-md transform transition-all duration-300 ease-out ${toast.variant === "default" && "bg-primary"} ${toast.variant === "error" && "bg-destructive"} ${toast.variant === "info" && "bg-info"} ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-5"}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

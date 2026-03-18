@@ -2,7 +2,7 @@
 import addToFavorites from "@/lib/favorites/addToFavorites";
 import { createClient } from "@/lib/supabase/client";
 import { FavoriteWithProduct } from "@/lib/types/favorites.types";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -57,7 +57,7 @@ export default function FavoritesList({
                 >
                   {f.products?.categories?.name}
                 </Link>
-                <p className="">{formatPrice(f.products?.price || 0)} </p>
+                <p className="">{formatToCurrency(f.products?.price)} </p>
               </div>
             </div>
             <button

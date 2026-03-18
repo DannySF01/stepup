@@ -4,7 +4,7 @@ import CounterInput from "../ui/CounterInput";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import Link from "next/link";
 import { Category } from "@/lib/types/products.types";
 
@@ -44,7 +44,7 @@ export default function CartItem({ id, item, quantity, size }: CartItemProps) {
     router.refresh();
   };
 
-  const price = formatPrice(
+  const price = formatToCurrency(
     getEffectivePrice(item.price, item.on_sale, item.sale_price),
   );
 

@@ -9,5 +9,5 @@ export function getPagination(page: string | undefined) {
 }
 
 export function getTotalPages(count: number | null) {
-  return Math.ceil((count || 0) / PAGE_SIZE);
+  return Math.ceil((count || 1) / PAGE_SIZE);
 }

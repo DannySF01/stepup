@@ -1,6 +1,6 @@
 "use client";
 import Checkbox from "@/components/ui/Checkbox";
-import { Field, FieldLabel, FieldLegend } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Field";
 import { Label } from "@/components/ui/Label";
 import {
   Collapsible,
@@ -9,14 +9,16 @@ import {
 } from "./Collapsible";
 import { ChevronDownIcon } from "lucide-react";
 import { useFilters } from "@/hooks/useFilters";
-import { Brand, Category } from "@/lib/types/products.types";
+import { Brand, Category, Size } from "@/lib/types/products.types";
 
 export default function Sidenav({
   brands,
   categories,
+  sizes,
 }: {
   brands: Brand[];
   categories: Category[];
+  sizes: Size[];
 }) {
   const {
     isActive,
@@ -137,6 +139,22 @@ export default function Sidenav({
                 onCheckedChange={() => setParam("category", category.slug)}
               />
               <Label htmlFor={category.slug}>{category.name}</Label>
+            </Field>
+          ))}
+        </CollapsibleContent>
+      </Collapse>
+      <Collapse defaultOpen title="Tamanhos">
+        <CollapsibleContent className="flex flex-col gap-2">
+          {sizes.map((size) => (
+            <Field key={size.id} orientation="horizontal">
+              <Checkbox
+                id={size.id}
+                checked={isActive("sizes", size.value.toString())}
+                onCheckedChange={() =>
+                  toggleMultiParam("sizes", size.value.toString())
+                }
+              />
+              <Label htmlFor={size.id}>{size.value}</Label>
             </Field>
           ))}
         </CollapsibleContent>

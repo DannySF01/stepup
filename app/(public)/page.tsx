@@ -29,8 +29,8 @@ export default async function Home() {
     .limit(10);
 
   return (
-    <div>
-      <nav className="flex items-center font-semibold justify-center gap-12 p-6">
+    <div className="space-y-6 py-9">
+      <nav className="flex items-center font-semibold justify-center gap-12 ">
         {categories?.map((c: Category) => (
           <Link
             href={`/products?category=${c.slug}`}

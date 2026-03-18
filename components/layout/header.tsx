@@ -26,7 +26,7 @@ export default function header({ cart_count, fav_count }: HeaderProps) {
   const { profile, isAuthenticated } = useAuth();
 
   return (
-    <header className="absolute top-0 left-0 w-screen">
+    <header className="absolute top-0 left-0 w-screen border-b shadow-sm z-50">
       <Topbar />
       <div className="app-container min-h-20 mx-auto flex items-center justify-between ">
         <Link className="text-2xl font-bold" href="/">

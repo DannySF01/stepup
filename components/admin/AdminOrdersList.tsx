@@ -1,5 +1,5 @@
 import { OrderItemWithProduct, OrderWithItems } from "@/lib/types/cart.types";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import {
   Collapsible,
   CollapsibleContent,
@@ -26,7 +26,7 @@ export default function AdminOrdersList({ orders }: OrdersListProps) {
           <CollapsibleTrigger className="grid grid-cols-7 place-items-center group gap-3 py-6">
             <p className="text-sm col-span-2 place-self-start">#{order.id}</p>
             <p className="col-span-2">{order.status}</p>
-            <p className="col-span-2">{formatPrice(order.total)}</p>
+            <p className="col-span-2">{formatToCurrency(order.total)}</p>
             <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180 col-span-1" />
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -60,7 +60,7 @@ export default function AdminOrdersList({ orders }: OrdersListProps) {
                       {item.products.categories?.name}
                     </p>
                     <p className="col-span-2 text-sm text-muted-foreground">
-                      {item.quantity} x {formatPrice(item.products.price)}
+                      {item.quantity} x {formatToCurrency(item.products.price)}
                     </p>
                   </div>
                 </div>

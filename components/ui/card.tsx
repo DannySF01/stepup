@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 
 interface CardProps {
   name: string | null;
@@ -33,13 +33,13 @@ export default function Card({
         </h2>
         {on_sale ? (
           <div className="flex gap-2">
-            <p className="font-semibold"> {formatPrice(sale_price)}</p>
+            <p className="font-semibold"> {formatToCurrency(sale_price)}</p>
             <p className="line-through text-muted-foreground text-sm self-center">
-              {formatPrice(price)}
+              {formatToCurrency(price)}
             </p>
           </div>
         ) : (
-          <p className="font-semibold">{formatPrice(price)}</p>
+          <p className="font-semibold">{formatToCurrency(price)}</p>
         )}
       </div>
     </Link>

@@ -1,7 +1,7 @@
 "use client";
 import addToFavorites from "@/lib/favorites/addToFavorites";
 import { FavoriteWithProduct } from "@/lib/types/favorites.types";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -41,7 +41,7 @@ export default function FavoriteList({ initialFavorites }: FavoriteListProps) {
                   {f.products?.name}
                 </Link>
                 <p className="font-semibold">
-                  {formatPrice(f.products?.price || 0)}
+                  {formatToCurrency(f.products?.price)}
                 </p>
               </div>
               <p className="text-muted-foreground text-sm">

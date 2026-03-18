@@ -1,5 +1,5 @@
-export function formatPrice(
-  cents: number | null,
+export function formatToCurrency(
+  cents: number | null | undefined,
   locale = "pt-PT",
   currency = "EUR",
 ) {
@@ -8,4 +8,9 @@ export function formatPrice(
     style: "currency",
     currency,
   }).format(cents / 100);
+}
+
+export function formatToCents(price: number | null | undefined) {
+  if (!price) return 0;
+  return price * 100;
 }

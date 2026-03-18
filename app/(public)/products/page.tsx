@@ -1,14 +1,16 @@
-import { createClient } from "@/lib/supabase/client";
+import { createServer } from "@/lib/supabase/server";
 import Sort from "@/components/ui/Sort";
-import Card from "@/components/ui/Card";
 import Sidenav from "@/components/ui/Sidenav";
-import { ProductWithEffectivePrice } from "@/lib/types/products.types";
+import { getPagination, getTotalPages } from "@/lib/utils/pagination";
+import ProductsList from "@/components/products/ProductsList";
+import { formatToCents } from "@/lib/utils/formatPrice";
 
 export default async function Products({
   searchParams,
 }: {
   searchParams: Promise<{
     q: string;
+    page: string;
     sale: boolean;
     sort: string;
     category: string;
@@ -16,16 +18,27 @@ export default async function Products({
     brand: string;
     min: string;
     max: string;
+    sizes: string;
   }>;
 }) {
-  const supabase = createClient();
+  const supabase = await createServer();
 
   const params = await searchParams;
+
+  const { from, to, currentPage } = getPagination(params.page);
+
+  //se tiverem tamanhos selecionados, faz um join na query para pegar os produtos com esses tamanhos, se não, pega todos os produtos
+  const selectString = params.sizes
+    ? "*, brands!inner(slug), categories!inner(slug), product_sizes!inner(*, sizes!inner(*))"
+    : "*, brands!inner(slug), categories!inner(slug), product_sizes(*, sizes!inner(*))";
 
   //created a supabase view to calculate the effective price
   let query = supabase
     .from("products_with_effective_price")
-    .select("*,  brands!inner(slug), categories!inner(slug)");
+    .select(selectString, {
+      count: "exact",
+    })
+    .range(from, to);
 
   if (params.sale) {
     query = query.eq("on_sale", true);
@@ -46,11 +59,13 @@ export default async function Products({
   }
 
   if (params.min || params.max) {
-    if (!params.min) params.min = "0";
-    if (!params.max) params.max = "9999";
+    const MAX_PRICE_RANGE = 99999999;
+    const minCents = formatToCents(Number(params.min));
+    const maxCents = formatToCents(Number(params.max) || MAX_PRICE_RANGE);
+
     query = query
-      .gte("effective_price", params.min)
-      .lte("effective_price", params.max);
+      .gte("effective_price", minCents)
+      .lte("effective_price", maxCents);
   }
 
   switch (params.sort) {
@@ -66,13 +81,22 @@ export default async function Products({
     query = query.textSearch("name", params.q);
   }
 
-  const { data: products } = await query;
+  if (params.sizes) {
+    //converter o string de sizes para um array de numbers
+    const selectedSizes = params.sizes.split(",").map(Number);
+    query = query.in("product_sizes.sizes.value", selectedSizes);
+  }
+
+  const { data: products, count } = await query;
   const { data: brands } = await supabase.from("brands").select("*");
   const { data: categories } = await supabase.from("categories").select("*");
+  const { data: sizes } = await supabase.from("sizes").select("*");
 
   const category_name = categories?.find(
     (c) => c.slug === params.category,
   )?.name;
+
+  const totalPages = getTotalPages(count);
 
   return (
     <div className="flex flex-col py-6 min-h-screen">
@@ -80,16 +104,18 @@ export default async function Products({
         <h1 className="text-2xl ">{category_name || "Todos os produtos"}</h1>
         <Sort />
       </div>
-      <div className="flex gap-6">
-        <Sidenav brands={brands || []} categories={categories || []} />
-        <div className="grid grid-cols-5 gap-3 h-fit">
-          {products?.map((p: ProductWithEffectivePrice) => (
-            <Card key={p.id} {...p} href={`/products/${p.id}`} />
-          ))}
-        </div>
+      <div className="flex gap-9">
+        <Sidenav
+          brands={brands || []}
+          categories={categories || []}
+          sizes={sizes || []}
+        />
+        <ProductsList
+          products={products}
+          searchParams={params}
+          pagination={{ currentPage, totalPages }}
+        />
       </div>
-
-      <div>{/* TODO: Pagination */}</div>
     </div>
   );
 }

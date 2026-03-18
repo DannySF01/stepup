@@ -13,7 +13,7 @@ import {
   FieldSet,
 } from "../ui/Field";
 import { Input } from "../ui/Input";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import Select from "../ui/Select";
 import { useActionState, useEffect, useState } from "react";
 import { Button } from "../ui/Button";

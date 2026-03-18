@@ -3,7 +3,7 @@ import {
   ProductSize,
   ProductWithCategoryAndBrand,
 } from "@/lib/types/products.types";
-import { formatPrice } from "@/lib/utils/formatPrice";
+import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { StarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Pagination from "../ui/Pagination";
@@ -76,7 +76,7 @@ export default function AdminProductsTable({
       render: (p: ProductWithCategoryAndBrand) => {
         const productSize = product_sizes?.find((ps) => ps.product_id === p.id);
         if (productSize) {
-          return formatPrice(p.price);
+          return formatToCurrency(p.price);
         } else {
           return "";
         }

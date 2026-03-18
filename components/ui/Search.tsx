@@ -60,7 +60,7 @@ export default function Search() {
 
   return (
     <div className="w-full max-w-60 md:max-w-60 lg:max-w-80">
-      <div className="relative mt-2">
+      <div className="relative">
         <input
           type="text"
           value={search}
