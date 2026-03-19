@@ -1,5 +1,6 @@
 import AdminProductsTable from "@/components/admin/AdminProductsTable";
 import { createServer } from "@/lib/supabase/server";
+import { ProductDetailed } from "@/lib/types/products.types";
 import { getPagination, getTotalPages } from "@/lib/utils/pagination";
 
 interface AdminProductsProps {
@@ -22,7 +23,7 @@ export default async function AdminProducts({
   const search = q || "";
 
   const { data: products, count } = await supabase
-    .from("products")
+    .from("products_view")
     .select("*, categories(*), brands(*)", { count: "exact" })
     .range(from, to)
     .ilike("name", `%${search}%`);
@@ -38,7 +39,7 @@ export default async function AdminProducts({
     <div className="bg-card p-9 rounded-md space-y-6">
       <h1 className="text-xl ">Produtos</h1>
       <AdminProductsTable
-        products={products}
+        products={products as ProductDetailed[]}
         product_sizes={product_sizes}
         pagination={{ currentPage, totalPages }}
         search={search}

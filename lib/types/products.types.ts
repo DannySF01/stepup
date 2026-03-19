@@ -18,8 +18,15 @@ export type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 export type Brand = Database["public"]["Tables"]["brands"]["Row"];
 
-export type ProductWithEffectivePrice =
-  Database["public"]["Views"]["products_with_effective_price"]["Row"];
+export type Product_view = Database["public"]["Views"]["products_view"]["Row"];
+
+export type ProductDetailed = {
+  [K in keyof Product_view]: NonNullable<Product_view[K]>;
+} & {
+  brands: Brand;
+  categories: Category;
+  product_sizes: ProductSizeWithSize[];
+};
 
 export type ProductSize = Database["public"]["Tables"]["product_sizes"]["Row"];
 

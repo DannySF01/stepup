@@ -1,8 +1,5 @@
 "use client";
-import {
-  ProductSize,
-  ProductWithCategoryAndBrand,
-} from "@/lib/types/products.types";
+import { ProductDetailed, ProductSize } from "@/lib/types/products.types";
 import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { StarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,7 +9,7 @@ import { useTableFilters } from "@/hooks/useTableFilters";
 import Table from "../ui/Table";
 
 interface AdminProductsTableProps {
-  products: ProductWithCategoryAndBrand[] | null;
+  products: ProductDetailed[] | null;
   product_sizes: ProductSize[] | null;
   pagination: {
     currentPage: number;
@@ -34,11 +31,11 @@ export default function AdminProductsTable({
     {
       header: "Produto",
       className: "col-span-2",
-      render: (p: ProductWithCategoryAndBrand) => (
+      render: (p: ProductDetailed) => (
         <div className="flex gap-3 items-center col-span-2">
           <img
             className="w-12 aspect-square rounded-full object-cover"
-            src={p.image_url || ""}
+            src={p.image_url || undefined}
             alt=""
           />
           <div className="text-ellipsis whitespace-nowrap overflow-hidden">
@@ -49,23 +46,23 @@ export default function AdminProductsTable({
     },
     {
       header: "Classificação",
-      render: (p: ProductWithCategoryAndBrand) => (
+      render: (p: ProductDetailed) => (
         <div className="flex gap-1.5">
-          {5} <StarIcon size={20} className="text-yellow-400" />
+          {p.rating_avg} <StarIcon size={20} className="text-yellow-400" />
         </div>
       ),
     },
     {
       header: "Categoria",
-      render: (p: ProductWithCategoryAndBrand) => p.categories?.name,
+      render: (p: ProductDetailed) => p.categories?.name,
     },
     {
       header: "Marca",
-      render: (p: ProductWithCategoryAndBrand) => p.brands?.name,
+      render: (p: ProductDetailed) => p.brands?.name,
     },
     {
       header: "Stock",
-      render: (p: ProductWithCategoryAndBrand) => (
+      render: (p: ProductDetailed) => (
         <div>
           {product_sizes?.find((size) => size.product_id === p.id)?.stock || 0}
         </div>
@@ -73,7 +70,7 @@ export default function AdminProductsTable({
     },
     {
       header: "Preço",
-      render: (p: ProductWithCategoryAndBrand) => {
+      render: (p: ProductDetailed) => {
         const productSize = product_sizes?.find((ps) => ps.product_id === p.id);
         if (productSize) {
           return formatToCurrency(p.price);
@@ -84,7 +81,7 @@ export default function AdminProductsTable({
     },
   ];
 
-  const handleRowClick = (product: ProductWithCategoryAndBrand) => {
+  const handleRowClick = (product: ProductDetailed) => {
     router.push(`/admin/products/${product.id}`);
   };
 

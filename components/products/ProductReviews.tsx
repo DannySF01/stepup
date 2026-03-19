@@ -14,9 +14,17 @@ import { useRouter } from "next/navigation";
 interface ReviewsProps {
   comments: CommentWithProfile[];
   productId: string;
+  rating: {
+    average: number;
+    count: number;
+  };
 }
 
-export default function ProductReviews({ comments, productId }: ReviewsProps) {
+export default function ProductReviews({
+  comments,
+  productId,
+  rating,
+}: ReviewsProps) {
   const MAX_COMMENTS = 3;
   const MAX_RATING = 5;
 
@@ -27,10 +35,6 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
   const { profile } = useAuth();
 
   if (!profile) return null;
-
-  const averageRating =
-    comments.reduce((acc, comment) => acc + (comment.rating || 0), 0) /
-      comments.length || 0;
 
   function ratingPercentage(rating: number) {
     return (
@@ -106,13 +110,13 @@ export default function ProductReviews({ comments, productId }: ReviewsProps) {
   return (
     <div className="pb-12">
       <h3 className="text-xl mb-9 font-semibold underline underline-offset-9">
-        Avaliações ({comments.length})
+        Avaliações ({rating.count})
       </h3>
       <div className="flex gap-6 pb-12">
         <div className="flex flex-col flex-2 gap-6 px-6">
           <div className="flex justify-center items-center gap-6">
-            <div className="text-5xl">{averageRating.toFixed(1)}</div>
-            <Rating size={8} rating={averageRating} />
+            <div className="text-5xl">{rating.average.toFixed(1)}</div>
+            <Rating size={8} rating={rating.average} />
           </div>
           <div className="grid grid-cols-3 gap-1.5">
             <span>5 estrelas</span>

@@ -1,12 +1,12 @@
 "use client";
-import { ProductWithEffectivePrice } from "@/lib/types/products.types";
+import { ProductDetailed } from "@/lib/types/products.types";
 import { useRouter } from "next/navigation";
 import Card from "../ui/Card";
 import Pagination from "../ui/Pagination";
 import { PAGE_SIZE } from "@/lib/utils/pagination";
 
 interface ProductsListProps {
-  products: ProductWithEffectivePrice[] | null;
+  products: ProductDetailed[] | null;
   searchParams: any;
   pagination: { currentPage: number; totalPages: number };
 }
@@ -27,7 +27,7 @@ export default function ProductsList({
   return (
     <div className="mx-auto">
       <div className="grid grid-cols-5 gap-3 h-fit">
-        {products?.map((p: ProductWithEffectivePrice) => (
+        {products?.map((p: ProductDetailed) => (
           <Card key={p.id} {...p} href={`/products/${p.id}`} />
         ))}
       </div>

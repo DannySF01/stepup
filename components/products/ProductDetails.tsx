@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/Button";
 import { addToCart } from "@/lib/cart/addToCart";
 import addToFavorites from "@/lib/favorites/addToFavorites";
-import { ProductWithSizes } from "@/lib/types/products.types";
+import { ProductDetailed } from "@/lib/types/products.types";
 import { formatToCurrency } from "@/lib/utils/formatPrice";
 import {
   CircleQuestionMark,
@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/Toast";
+import Rating from "../ui/Rating";
 
 type ProductStockWithSize = {
   stock: number;
@@ -24,7 +25,7 @@ type ProductStockWithSize = {
 };
 
 type ProductDetailsProps = {
-  product: ProductWithSizes;
+  product: ProductDetailed;
   isFav: boolean;
 };
 
@@ -83,7 +84,8 @@ export default function ProductDetails({
       <div className="flex flex-2 flex-col gap-6">
         <div>
           <h2 className="text-2xl font-semibold">{product?.name}</h2>
-          <p className="text-2xl">{formatToCurrency(product?.price)}</p>
+          <Rating rating={product?.rating_avg} />
+          <p className="text-2xl mt-3">{formatToCurrency(product?.price)}</p>
         </div>
         <div>
           <h3 className="pb-3 font-semibold">Tamanhos</h3>

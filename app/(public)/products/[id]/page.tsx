@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import type { Product } from "@/lib/types/products.types";
+import type { ProductDetailed } from "@/lib/types/products.types";
 import isFavorite from "@/lib/favorites/isFavorite";
 import ProductDetails from "@/components/products/ProductDetails";
 import ProductReviews from "@/components/products/ProductReviews";
@@ -13,16 +13,18 @@ export default async function Product({
 
   const { id } = await params;
   const { data: product, error } = await supabase
-    .from("products")
+    .from("products_view")
     .select("*, product_sizes(*, sizes!inner(*))")
     .eq("id", id)
     .order("sizes(value)", {
       referencedTable: "product_sizes",
       ascending: true,
     })
-    .single();
+    .single<ProductDetailed>();
 
-  if (!product || error) throw new Error("Produto não encontrado");
+  if (error || !product) {
+    throw new Error("Produto nao encontrado");
+  }
 
   const isFav = await isFavorite(product.id);
 
@@ -35,7 +37,11 @@ export default async function Product({
   return (
     <div className="flex flex-col m-auto max-w-7xl">
       <ProductDetails product={product} isFav={isFav} />
-      <ProductReviews comments={comments || []} productId={product.id} />
+      <ProductReviews
+        comments={comments || []}
+        productId={product.id}
+        rating={{ average: product.rating_avg, count: product.rating_count }}
+      />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Sidenav from "@/components/ui/Sidenav";
 import { getPagination, getTotalPages } from "@/lib/utils/pagination";
 import ProductsList from "@/components/products/ProductsList";
 import { formatToCents } from "@/lib/utils/formatPrice";
+import { ProductDetailed } from "@/lib/types/products.types";
 
 export default async function Products({
   searchParams,
@@ -34,7 +35,7 @@ export default async function Products({
 
   //created a supabase view to calculate the effective price
   let query = supabase
-    .from("products_with_effective_price")
+    .from("products_view")
     .select(selectString, {
       count: "exact",
     })
@@ -111,7 +112,7 @@ export default async function Products({
           sizes={sizes || []}
         />
         <ProductsList
-          products={products}
+          products={products as ProductDetailed[]}
           searchParams={params}
           pagination={{ currentPage, totalPages }}
         />
