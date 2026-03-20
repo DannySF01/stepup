@@ -18,6 +18,10 @@ export default async function AdminProduct({ params }: AdminProductProps) {
 
   if (!brands) return null;
 
+  const { data: sizes } = await supabase.from("sizes").select("*");
+
+  if (!sizes) return null;
+
   const { data: products } = await supabase
     .from("products")
     .select("*, categories(*), brands(*)")
@@ -29,16 +33,18 @@ export default async function AdminProduct({ params }: AdminProductProps) {
   const { data: product_sizes } = await supabase
     .from("product_sizes")
     .select("*, sizes(*)")
-    .eq("product_id", id);
+    .eq("product_id", id)
+    .order("sizes(value)");
 
   if (!product_sizes) return null;
 
   return (
-    <div className="bg-card p-9 rounded-md space-y-6">
+    <div className="p-3 space-y-6">
       <AdminProductForm
         product={products}
         product_sizes={product_sizes}
         categories={categories}
+        sizes={sizes}
         brands={brands}
       />
     </div>
