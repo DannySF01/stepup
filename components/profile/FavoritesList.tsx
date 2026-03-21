@@ -28,6 +28,7 @@ export default function FavoritesList({
         prev.filter((f: any) => f.product_id !== id),
       );
       await addToFavorites(id);
+      router.refresh();
     } catch (error: any) {
       console.error(error.message);
     }

@@ -4,6 +4,7 @@ import { FavoriteWithProduct } from "@/lib/types/favorites.types";
 import { formatToCurrency } from "@/lib/utils/formatPrice";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface FavoriteListProps {
@@ -14,10 +15,13 @@ export default function FavoriteList({ initialFavorites }: FavoriteListProps) {
     initialFavorites || [],
   );
 
+  const router = useRouter();
+
   async function onItemRemove(id: string) {
     try {
       setFavoritesList((prev) => prev.filter((f) => f.product_id !== id));
       await addToFavorites(id);
+      router.refresh();
     } catch (error: any) {
       console.error(error.message);
     }

@@ -20,7 +20,7 @@ export default function AdminOrdersList({ orders }: OrdersListProps) {
           <div className="col-span-2">Preço</div>
         </div>
       </div>
-      {!orders?.length && <p>Não tens pedidos</p>}
+      {!orders?.length && <p className="py-6">Ainda não existem pedidos</p>}
       {orders?.map((order: OrderWithItems) => (
         <Collapsible className="grid border-b" key={order.id}>
           <CollapsibleTrigger className="grid grid-cols-7 place-items-center group gap-3 py-6">

@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/Toast";
 import Rating from "../ui/Rating";
+import { useRouter } from "next/navigation";
 
 type ProductStockWithSize = {
   stock: number;
@@ -37,6 +38,8 @@ export default function ProductDetails({
   const [error, setError] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(isFav);
 
+  const router = useRouter();
+
   const sizes = product.product_sizes as ProductStockWithSize[];
 
   const { toast } = useToast();
@@ -47,6 +50,7 @@ export default function ProductDetails({
       if (!selectedSize) throw new Error("Nenhum tamanho selecionado");
       await addToCart(product.id, selectedSize.sizes.id);
       toast({ description: "Produto adicionado ao carrinho" });
+      router.refresh();
     } catch (error: any) {
       setError(error.message);
     }
@@ -57,6 +61,16 @@ export default function ProductDetails({
       setError(null);
       setIsFavorite(!isFavorite);
       await addToFavorites(product.id);
+      if (!isFavorite)
+        toast({
+          description: "Produto adicionado aos favoritos",
+        });
+      else
+        toast({
+          variant: "info",
+          description: "Produto removido dos favoritos",
+        });
+      router.refresh();
     } catch (error: any) {
       setError(error.message);
     }

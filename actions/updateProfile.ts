@@ -71,7 +71,7 @@ export default async function updateProfile(
   const updatedProfile = {
     ...parsed.data,
     phone: Number(parsed.data.phone),
-    birthdate: new Date(parsed.data.birthdate || ""),
+    birthdate: new Date(parsed.data.birthdate || new Date()).toISOString(),
   };
 
   console.log("updatedProfile", updatedProfile);

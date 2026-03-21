@@ -23,8 +23,8 @@ export default async function updateProduct(
     sale_price: formatToCents(Number(formData.get("sale_price"))),
     on_sale: Boolean(formData.get("on_sale")),
     image_url: formData.get("image_url")?.toString(),
-    category_id: formData.get("category")?.toString() || "",
-    brand_id: formData.get("brand")?.toString() || "",
+    category_id: formData.get("category")?.toString() || undefined,
+    brand_id: formData.get("brand")?.toString() || undefined,
   };
 
   const sizesToUpsert: ProductSize[] = [];

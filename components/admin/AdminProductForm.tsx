@@ -19,7 +19,7 @@ import {
 import { useActionState, useEffect, useState } from "react";
 import updateProduct from "@/actions/admin/updateProduct";
 import { useToast } from "../ui/Toast";
-import { ArrowLeft, Check, Package } from "lucide-react";
+import { ArrowLeft, Check, Package, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Input } from "../ui/Input";
@@ -121,6 +121,17 @@ export default function AdminProductForm({
     </div>
   );
 
+  async function handleRemoveProduct() {
+    if (window.confirm("Tem certeza que deseja excluir?")) {
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", product.id);
+      if (error) return console.error(error.message);
+      router.push("/admin/products");
+    }
+  }
+
   return (
     <div>
       <form action={formAction}>
@@ -136,10 +147,21 @@ export default function AdminProductForm({
                   new Date(product.created_at || "").toLocaleString()}
               </FieldDescription>
             </div>
-            <Button size="lg" type="submit" className="w-36 ml-auto">
-              <Check />
-              {pending ? " Publicando..." : "Publicar"}
-            </Button>
+            <div className="flex gap-3 ml-auto">
+              <Button
+                size="lg"
+                variant="destructive"
+                type="button"
+                onClick={handleRemoveProduct}
+              >
+                <Trash2Icon />
+                Remover
+              </Button>
+              <Button size="lg" type="submit" className="w-32">
+                <Check />
+                {pending ? " Publicando..." : "Publicar"}
+              </Button>
+            </div>
           </div>
           <FieldGroup>
             <div className="flex gap-6">

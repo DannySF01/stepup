@@ -9,7 +9,7 @@ export default async function AdminOrders() {
     .select("*, order_items(*, products!inner(*, categories!inner(*)))");
 
   return (
-    <div className="bg-card p-6 rounded-md">
+    <div className="bg-card p-9 rounded-md">
       <AdminOrdersList orders={orders} />
     </div>
   );

@@ -71,12 +71,7 @@ export default function AdminProductsTable({
     {
       header: "Preço",
       render: (p: ProductDetailed) => {
-        const productSize = product_sizes?.find((ps) => ps.product_id === p.id);
-        if (productSize) {
-          return formatToCurrency(p.price);
-        } else {
-          return "";
-        }
+        return formatToCurrency(p.effective_price);
       },
     },
   ];
