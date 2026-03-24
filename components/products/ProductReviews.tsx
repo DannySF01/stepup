@@ -26,17 +26,15 @@ export default function ProductReviews({
   rating,
 }: ReviewsProps) {
   const MAX_COMMENTS = 3;
-  const MAX_RATING = 5;
 
   const { toast } = useToast();
   const router = useRouter();
 
   const supabase = createClient();
+
   const { profile } = useAuth();
 
-  if (!profile) return null;
-
-  function ratingPercentage(rating: number) {
+  function ratingPercentage(rating: number): number {
     return (
       (comments.filter((c) => c.rating === rating).length / comments.length) *
         100 || 0
@@ -46,19 +44,17 @@ export default function ProductReviews({
   async function handleAddReview() {
     if (!profile)
       return toast({
-        title: "Erro",
         variant: "error",
-        description: "É necessário estar autenticado para avaliar",
+        description: "Inicie sessão para avaliar",
       });
 
     if (comments.some((comment) => comment.user_id === profile.id)) {
       return toast({
-        title: "Erro",
         variant: "error",
         description: "Já tem uma avaliação para este produto",
       });
     } else {
-      // verifica se comprou o produto supabase
+      // verifica se comprou o produto
       const { data: orders, error } = await supabase
         .from("orders")
         .select("*, order_items(*)")

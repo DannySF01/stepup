@@ -6,7 +6,7 @@ export default async function isFavorite(productId: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Utilizador não autenticado");
+  if (!user) return false;
 
   const { data } = await supabase
     .from("favorites")

@@ -34,6 +34,10 @@ export async function getSession() {
   return await supabase.auth.getSession();
 }
 
+export async function getUser() {
+  return await supabase.auth.getUser();
+}
+
 export async function getProfile(userId: string) {
   return await supabase.from("profiles").select("*").eq("id", userId).single();
 }

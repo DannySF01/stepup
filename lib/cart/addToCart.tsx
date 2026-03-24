@@ -7,7 +7,12 @@ export async function addToCart(product_id: string, size_id: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return;
+  if (!user)
+    return {
+      state: "error",
+      message: "É necessário iniciar sessão",
+      item: null,
+    };
 
   const { data: cart } = await supabase
     .from("carts")
@@ -17,7 +22,8 @@ export async function addToCart(product_id: string, size_id: string) {
     .limit(1)
     .single();
 
-  if (!cart) return;
+  if (!cart)
+    return { state: "error", message: "Carrinho não encontrado", item: null };
 
   const { data: item, error } = await supabase
     .from("cart_items")
@@ -30,5 +36,6 @@ export async function addToCart(product_id: string, size_id: string) {
     .eq("cart_id", cart?.id)
     .single();
 
-  return { item, error };
+  if (error) return { state: "error", message: error.message, item: null };
+  return { state: "success", message: null, item };
 }

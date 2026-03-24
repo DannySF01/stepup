@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "../ui/Toast";
 import Rating from "../ui/Rating";
 import { useRouter } from "next/navigation";
+import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
 
 type ProductStockWithSize = {
   stock: number;
@@ -45,35 +46,19 @@ export default function ProductDetails({
   const { toast } = useToast();
 
   const addItemToCart = async () => {
-    try {
-      setError(null);
-      if (!selectedSize) throw new Error("Nenhum tamanho selecionado");
-      await addToCart(product.id, selectedSize.sizes.id);
-      toast({ description: "Produto adicionado ao carrinho" });
-      router.refresh();
-    } catch (error: any) {
-      setError(error.message);
-    }
+    setError(null);
+    if (!selectedSize) return setError("Nenhum tamanho selecionado");
+    const response = await addToCart(product.id, selectedSize.sizes.id);
+    if (response.state === "error") return setError(response.message);
+    router.refresh();
   };
 
   const addItemToFavorites = async () => {
-    try {
-      setError(null);
-      setIsFavorite(!isFavorite);
-      await addToFavorites(product.id);
-      if (!isFavorite)
-        toast({
-          description: "Produto adicionado aos favoritos",
-        });
-      else
-        toast({
-          variant: "info",
-          description: "Produto removido dos favoritos",
-        });
-      router.refresh();
-    } catch (error: any) {
-      setError(error.message);
-    }
+    setError(null);
+    const response = await addToFavorites(product.id);
+    if (response.state === "error") return setError(response.message);
+    setIsFavorite(!isFavorite);
+    router.refresh();
   };
 
   useEffect(() => {
@@ -99,7 +84,17 @@ export default function ProductDetails({
         <div>
           <h2 className="text-2xl font-semibold">{product?.name}</h2>
           <Rating rating={product?.rating_avg} />
-          <p className="text-2xl mt-3">{formatToCurrency(product?.price)}</p>
+          <div className="text-2xl mt-3">
+            {product?.sale_price && (
+              <div>
+                {formatToCurrency(product.sale_price)}
+                <span className="text-sm line-through text-muted-foreground ml-2">
+                  {formatToCurrency(product.price)}
+                </span>
+              </div>
+            )}
+            {!product?.sale_price && formatToCurrency(product.price)}
+          </div>
         </div>
         <div>
           <h3 className="pb-3 font-semibold">Tamanhos</h3>
@@ -112,7 +107,11 @@ export default function ProductDetails({
                   selectedSize?.sizes.id === s.sizes.id ? "default" : "outline"
                 }
                 key={s.sizes.id}
-                onClick={() => setSelectedSize(s)}
+                onClick={() =>
+                  setSelectedSize(
+                    selectedSize?.sizes.id === s.sizes.id ? undefined : s,
+                  )
+                }
               >
                 EU {s.sizes.value}
               </Button>

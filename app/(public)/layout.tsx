@@ -12,14 +12,9 @@ export default async function RootLayout({
 }>) {
   const { user, profile } = await getUserWithProfile();
 
-  const { cart } = await getCart();
-  const cart_count =
-    cart?.cart_items
-      .map((item) => item.quantity)
-      .reduce((a: any, b: any) => a + b, 0) || 0;
+  const { cart_count } = await getCart();
 
-  const { data: favorites } = await getFavorites();
-  const fav_count = favorites?.length || 0;
+  const { fav_count } = await getFavorites();
 
   return (
     <div className="min-h-screen mx-auto app-container flex flex-col">

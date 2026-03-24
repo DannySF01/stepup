@@ -12,9 +12,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/services/authService";
+import { useToast } from "@/components/ui/Toast";
 
 export default function Login() {
   const router = useRouter();
+  const { toast } = useToast();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,9 +29,9 @@ export default function Login() {
     setError(null);
 
     try {
-      const { data, error } = await signIn(email, password);
+      const { error } = await signIn(email, password);
       if (error) {
-        throw error;
+        toast({ variant: "error", description: "Email ou senha incorretos" });
       } else {
         router.push("/");
       }

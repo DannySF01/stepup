@@ -6,6 +6,7 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { getProfile } from "@/services/authService";
 import { Profile } from "@/lib/types/auth.types";
+import { useRouter } from "next/navigation";
 
 type AuthContextType = {
   user: User | null;
@@ -27,6 +28,7 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<User | null>(initialUser || null);
   const [profile, setProfile] = useState(initialProfile || null);
+  const router = useRouter();
 
   useEffect(() => {
     const supabase = createClient();
@@ -39,6 +41,7 @@ export function AuthProvider({
             setProfile(profile),
           );
         }
+        router.refresh();
       },
     );
 

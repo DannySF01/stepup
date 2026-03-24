@@ -8,7 +8,7 @@ export async function getCart() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { cart: null, items: [] };
+  if (!user) return { cart: null, items: [], cart_count: 0 };
 
   const { data: cart } = await supabase
     .from("carts")
@@ -34,7 +34,12 @@ export async function getCart() {
     .limit(1)
     .single<CartWithItems>();
 
-  if (!cart) return { cart: null, items: [] };
+  if (!cart) return { cart: null, items: [], cart_count: 0 };
 
-  return { cart, items: cart.cart_items };
+  const cart_count =
+    cart.cart_items
+      .map((item) => item.quantity)
+      .reduce((a: any, b: any) => a + b, 0) || 0;
+
+  return { cart, items: cart.cart_items, cart_count };
 }
