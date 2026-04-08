@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/Input";
 import Link from "next/link";
 import { useState } from "react";
 import { signUp } from "@/services/authService";
+import { useToast } from "@/components/ui/Toast";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [name, setName] = useState<string>("");
@@ -18,28 +20,36 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
+      toast({
+        variant: "error",
+        description: "Passwords must match",
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast({
+        variant: "error",
+        description: "Password must be at least 6 characters long",
+      });
       return;
     }
 
     try {
-      const { data, error } = await signUp(email, password, { name });
-      if (error) {
-        throw error;
-      } else {
-        alert("Verifique seu email para confirmar sua conta");
-      }
+      setLoading(true);
+      const { error } = await signUp(email, password, { name });
+      if (error) throw error;
+      router.push("/auth/check-email");
     } catch (error: any) {
-      setError(error.message);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -55,7 +65,6 @@ export default function SignUp() {
               <p className="text-muted-foreground text-balance">
                 Fill in the form below to create your account
               </p>
-              {error && <p className="text-red-500">{error}</p>}
             </div>
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
@@ -105,7 +114,7 @@ export default function SignUp() {
                 </Field>
               </Field>
               <FieldDescription>
-                Must be at least 8 characters long.
+                Must be at least 6 characters long.
               </FieldDescription>
             </Field>
             <Field>

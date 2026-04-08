@@ -21,22 +21,20 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
     try {
       const { error } = await signIn(email, password);
       if (error) {
-        toast({ variant: "error", description: "Email ou senha incorretos" });
+        toast({ variant: "error", description: "Invalid credentials" });
       } else {
         router.push("/");
       }
     } catch (error: any) {
-      setError(error.message);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -53,7 +51,6 @@ export default function Login() {
                 Login to your StepUp account
               </p>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input

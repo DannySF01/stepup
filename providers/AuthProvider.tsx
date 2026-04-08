@@ -35,6 +35,9 @@ export function AuthProvider({
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        if (_event === "PASSWORD_RECOVERY") {
+          console.log("User is recovering password");
+        }
         setUser(session?.user ?? null);
         if (session?.user) {
           getProfile(session.user.id).then(({ data: profile }) =>
