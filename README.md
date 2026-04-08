@@ -1,14 +1,22 @@
 # 👟 StepUp
 
+![Next.js](https://img.shields.io)
+![React](https://img.shields.io)
+![TypeScript](https://img.shields.io)
+![Tailwind CSS](https://img.shields.io)
+![Supabase](https://img.shields.io)
+![PostgreSQL](https://img.shields.io)
+![Vercel](https://img.shields.io)
+
 **StepUp** é uma aplicação moderna de e-commerce de calçado, desenvolvida para demonstrar uma arquitetura web limpa e escalável, utilizando tecnologias modernas.
 
 ## 🚀 Demo Online
 
-🔗 TODO
+🔗 https://stepup-coral.vercel.app
 
 ## 📸 Screenshots
 
-TODO
+![Desktop Screenshot](./public/stepup.png)
 
 ## 🧠 Objetivos do Projeto
 
@@ -16,42 +24,22 @@ TODO
 - Construir um fluxo realista de **e-commerce**
 - Aplicar boas práticas de código limpo e organização de pastas
 - Trabalhar com autenticação e uma base de dados real
-- Fazer deploy de uma aplicação full-stack
-
-## 🛠️ Stack Tecnológica
-
-### Frontend
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-
-### Backend / Serviços
-
-- Supabase (Autenticação e Base de Dados)
-
-### Base de Dados
-
-- PostgreSQL
-
-### Deploy
-
-- Vercel
+- Implementar um Dashboard Administrativo completo.
 
 ## ✨ Funcionalidades
 
 ### 👤 Autenticação
 
-- Registo de utilizadores
-- Login e logout
+- Registo, login e gestão de perfil.
+- Gestão de múltiplos endereços de envio.
+- Lista de favoritos e carrinho persistente.
 - Proteção de rotas
 
 ### 🛍️ Loja
 
 - Listagem de produtos
 - Página de detalhe do produto
-- Filtro por categoria
+- Filtragem de produtos
 - Pesquisa de produtos
 - Layout responsivo
 
@@ -65,31 +53,90 @@ TODO
 
 ### 🧑‍💼 Administração
 
-- Dashboard de administração
-- Criar, editar e remover produtos
-- Upload de imagens
-- Gestão de stock
+- Dashboard de controlo de vendas
+- Gestão dos produtos
+- Gestão de inventário
+- Gestão das encomendas e estados de envio
 
 ## 📂 Estrutura do Projeto
 
 ```
-/app
-  /products
-  /cart
-  /auth
+/actions                        # Server Actions (Next.js)
 
-/components
+/app                            # App Router (Rotas Públicas e Admin)
+  (public)
+    /auth
+      /forgot-password
+      /login
+      /signup
+    /cart
+      /shipping
+        /payment
+    /favorites
+    /products
+      /[id]
+        /edit
+        /new
+    /profile
+      /change-password
+      /my-address
+      /my-favorites
+      /my-orders
+  admin
+    /orders
+    /products
+      /[id]
+    /users
+
+/components                      # Componentes Reutilizáveis
+  /admin
+  /cart
+  /favorites
   /layout
+  /products
+  /profile
   /ui
+
+/hooks                           # React hooks costumizados
 
 /lib
   /supabase
+  /types
+  /utils
+
+/providers
+
+/services                        # Lógica de comunicação com a DB
+
 
 ```
 
 ## 🗄️ Estrutura da Base de Dados
 
-TODO
+## 🗄️ Estrutura da Base de Dados
+
+O projeto utiliza **PostgreSQL** com uma estrutura normalizada para garantir a integridade dos dados e escalabilidade. Abaixo encontras o modelo relacional das principais entidades:
+
+```mermaid
+erDiagram
+    profiles ||--o{ orders : places
+    profiles ||--o{ addresses : "has many"
+    profiles ||--o{ comments : writes
+    profiles ||--o{ favorites : "marks as"
+
+    orders ||--o{ order_items : contains
+    products ||--o{ order_items : "price snapshot"
+
+    products ||--o{ product_inventory : "has stock for"
+    sizes ||--o{ product_inventory : defines
+
+    brands ||--o{ products : manufactures
+    categories ||--o{ products : categorizes
+
+    carts ||--o{ cart_items : contains
+    products ||--o{ cart_items : "added to"
+    sizes ||--o{ cart_items : "selected size"
+```
 
 ## ⚙️ Como Executar o Projeto
 
@@ -99,16 +146,11 @@ TODO
 - npm ou yarn
 - Conta no Supabase (https://supabase.com)
 
-### Clonar o repositório
+### Clonar o repositório e instalar dependências
 
 ```bash
 git clone https://github.com/DannySF01/stepup.git
 cd stepup
-```
-
-### Instalar dependências
-
-```bash
 npm install
 ```
 
