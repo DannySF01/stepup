@@ -1,7 +1,7 @@
 "use server";
 
 import { createServer } from "@/lib/supabase/server";
-import { ProductSize, ProductSizeWithSize } from "@/lib/types/products.types";
+import { ProductSize } from "@/lib/types/products.types";
 import { formatToCents } from "@/lib/utils/formatPrice";
 import { revalidatePath } from "next/cache";
 

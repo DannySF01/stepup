@@ -1,11 +1,11 @@
-import AdminProductForm from "@/components/admin/AdminProductForm";
+import AdminProductEditForm from "@/components/admin/AdminProductEditForm";
 import { createClient } from "@/lib/supabase/client";
 
 interface AdminProductProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function AdminProduct({ params }: AdminProductProps) {
+export default async function AdminProductEdit({ params }: AdminProductProps) {
   const { id } = await params;
 
   const supabase = await createClient();
@@ -40,7 +40,7 @@ export default async function AdminProduct({ params }: AdminProductProps) {
 
   return (
     <div className="p-3 space-y-6">
-      <AdminProductForm
+      <AdminProductEditForm
         product={products}
         product_sizes={product_sizes}
         categories={categories}

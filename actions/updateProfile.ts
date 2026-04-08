@@ -66,8 +66,6 @@ export default async function updateProfile(
     };
   }
 
-  console.log("parsed", parsed.data.birthdate);
-
   const updatedProfile = {
     ...parsed.data,
     phone: Number(parsed.data.phone),

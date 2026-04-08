@@ -34,7 +34,7 @@ export default function AdminProductsTable({
       render: (p: ProductDetailed) => (
         <div className="flex gap-3 items-center col-span-2">
           <img
-            className="w-12 aspect-square rounded-full object-cover"
+            className="w-12 aspect-square rounded-md object-cover"
             src={p.image_url || undefined}
             alt=""
           />

@@ -1,4 +1,5 @@
 import AdminProductsTable from "@/components/admin/AdminProductsTable";
+import { Button } from "@/components/ui/Button";
 import { createServer } from "@/lib/supabase/server";
 import { ProductDetailed } from "@/lib/types/products.types";
 import { getPagination, getTotalPages } from "@/lib/utils/pagination";
@@ -37,7 +38,13 @@ export default async function AdminProducts({
 
   return (
     <div className="bg-card p-9 rounded-md space-y-6">
-      <h1 className="text-xl ">Produtos</h1>
+      <div>
+        <h1 className="text-xl ">Produtos</h1>
+        <p className="text-sm text-muted-foreground">
+          {count} produtos encontrados
+        </p>
+      </div>
+
       <AdminProductsTable
         products={products as ProductDetailed[]}
         product_sizes={product_sizes}

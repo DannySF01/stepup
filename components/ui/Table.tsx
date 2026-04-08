@@ -24,7 +24,7 @@ export default function DataTable<T>({
   return (
     <div className="w-full">
       <div
-        className={`grid grid-cols-${columnCount} gap-3 px-3 border-b pb-3 text-muted-foreground`}
+        className={`grid grid-cols-${columnCount} gap-6 px-3 border-b pb-3 text-muted-foreground`}
       >
         {columns.map((col, index) => (
           <div key={index} className={col.className}>
@@ -38,7 +38,7 @@ export default function DataTable<T>({
           data.map((item, rowIndex) => (
             <div
               key={rowIndex}
-              className={`grid grid-cols-${columnCount} gap-3 p-3 hover:bg-muted/50 cursor-pointer items-center`}
+              className={`grid grid-cols-${columnCount} gap-6 p-3 hover:bg-muted/50 cursor-pointer items-center`}
               onClick={() => onRowClick && onRowClick(item)}
             >
               {columns.map((col, colIndex) => (

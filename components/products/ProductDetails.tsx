@@ -85,7 +85,7 @@ export default function ProductDetails({
           <h2 className="text-2xl font-semibold">{product?.name}</h2>
           <Rating rating={product?.rating_avg} />
           <div className="text-2xl mt-3">
-            {product?.sale_price && (
+            {product?.on_sale && (
               <div>
                 {formatToCurrency(product.sale_price)}
                 <span className="text-sm line-through text-muted-foreground ml-2">
@@ -93,7 +93,7 @@ export default function ProductDetails({
                 </span>
               </div>
             )}
-            {!product?.sale_price && formatToCurrency(product.price)}
+            {!product?.on_sale && formatToCurrency(product.price)}
           </div>
         </div>
         <div>
