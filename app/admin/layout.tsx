@@ -12,9 +12,12 @@ export default async function AdminLayout({
   if (profile?.role !== "admin") redirect("/");
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-background">
       <AdminSidebar user={user} profile={profile} />
-      <div className="p-9 w-full">{children}</div>
+
+      <main className="flex-1 h-screen overflow-y-auto">
+        <div className="p-6 md:p-8 lg:p-10 max-w-7xl mx-auto">{children}</div>
+      </main>
     </div>
   );
 }

@@ -45,7 +45,10 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      const { error } = await signUp(email, password, { name });
+      const { error } = await signUp(email, password, {
+        name: name,
+        email: email,
+      });
       if (error) throw error;
       router.push("/auth/check-email");
     } catch (error: any) {
