@@ -9,10 +9,11 @@ import {
   TruckIcon,
   User,
   UserCircle2,
+  LayoutDashboard,
 } from "lucide-react";
 import { Menu, MenuItem } from "../ui/Menu";
 import { signOut } from "@/services/authService";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Badge from "@/components/ui/Badge";
 import Search from "../ui/Search";
@@ -22,71 +23,111 @@ interface HeaderProps {
   cart_count: number;
   fav_count: number;
 }
+
 export default function header({ cart_count, fav_count }: HeaderProps) {
   const { profile, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   return (
-    <header className="absolute top-0 left-0 w-screen border-b shadow-sm z-50">
+    <header className="absolute top-0 left-0 w-full glass-green z-50 transition-all duration-300">
       <Topbar />
-      <div className="app-container min-h-20 mx-auto flex items-center justify-between ">
-        <Link className="text-2xl font-bold" href="/">
-          Step<span className="text-primary">Up</span>
+      <div className="app-container mx-auto h-20 flex items-center justify-between gap-8">
+        <Link
+          className="text-2xl font-black tracking-tighter italic uppercase group"
+          href="/"
+        >
+          Step
+          <span className="text-primary transition-colors group-hover:text-foreground">
+            Up
+          </span>
         </Link>
-        <Search />
-        <div className="flex gap-4 items-center">
-          <SunMoonIcon
-            className="cursor-pointer hover:text-primary"
+
+        <div className="flex-1 max-w-md hidden md:block">
+          <Search />
+        </div>
+
+        <div className="flex  items-center">
+          <button
+            className="p-3 rounded-xl hover:bg-primary/10 text-foreground transition-all active:scale-90"
             onClick={() => document.body.classList.toggle("dark")}
-          />
+          >
+            <SunMoonIcon
+              size={24}
+              strokeWidth={2}
+              className="hover:scale-110 hover:text-primary transition-all duration-300"
+            />
+          </button>
+
           <Link
-            className="flex items-center hover:text-primary"
+            className="p-3 rounded-xl hover:bg-primary/10 text-foreground transition-all relative group active:scale-95"
             href="/favorites"
           >
             <Badge value={fav_count}>
-              <Heart />
+              <Heart
+                size={24}
+                strokeWidth={2}
+                className="group-hover:scale-110 group-hover:text-primary transition-all duration-300"
+              />
             </Badge>
           </Link>
+
           <Link
-            className="flex items-center relative hover:text-primary"
+            className="p-3 rounded-xl hover:bg-primary/10 text-foreground transition-all relative group active:scale-95"
             href="/cart"
           >
             <Badge value={cart_count}>
-              <ShoppingBag />
+              <ShoppingBag
+                size={24}
+                strokeWidth={2}
+                className="group-hover:scale-110 group-hover:text-primary transition-all duration-300"
+              />
             </Badge>
           </Link>
+
           {isAuthenticated ? (
-            <div>
+            <div className="border-l border-border/40 pl-2 sm:pl-5 ml-1">
               <Menu
-                className="p-2 hover:text-primary"
-                icon={<User />}
-                title={profile?.name || ""}
+                className="flex items-center gap-2 p-2 rounded-xl hover:bg-primary/10 transition-colors font-bold text-sm tracking-tight"
+                icon={
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <User size={18} />
+                  </div>
+                }
+                title={profile?.name?.split(" ")[0] || ""}
               >
                 <MenuItem
-                  icon={<UserCircle2 />}
-                  onClick={() => redirect("/profile")}
+                  icon={<UserCircle2 size={16} />}
+                  onClick={() => router.push("/profile")}
                 >
                   Perfil
                 </MenuItem>
                 <MenuItem
-                  icon={<TruckIcon />}
-                  onClick={() => redirect("/profile/my-orders")}
+                  icon={<TruckIcon size={16} />}
+                  onClick={() => router.push("/profile/my-orders")}
                 >
                   Pedidos
                 </MenuItem>
-                <MenuItem
-                  icon={<UserCircle2 />}
-                  onClick={() => redirect("/admin")}
-                >
-                  Admin Dashboard
-                </MenuItem>
-                <MenuItem icon={<LogOut />} onClick={signOut}>
-                  Terminar Sessão
+                {profile?.role === "admin" && (
+                  <MenuItem
+                    icon={<LayoutDashboard size={16} />}
+                    onClick={() => router.push("/admin")}
+                  >
+                    Admin Dashboard
+                  </MenuItem>
+                )}
+                <div className="my-1 border-t border-border/40" />
+                <MenuItem icon={<LogOut size={16} />} onClick={signOut}>
+                  Sair
                 </MenuItem>
               </Menu>
             </div>
           ) : (
-            <Button size="lg">
-              <Link href="/auth/login">Iniciar Sessão</Link>
+            <Button
+              size="sm"
+              asChild
+              className="rounded-xl px-6 font-bold uppercase tracking-widest text-[10px]"
+            >
+              <Link href="/auth/login">Entrar</Link>
             </Button>
           )}
         </div>

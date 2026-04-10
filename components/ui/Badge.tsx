@@ -5,11 +5,13 @@ export default function Badge({
   value: number;
   children: React.ReactNode;
 }) {
+  if (value === 0) return <div className="relative">{children}</div>;
+
   return (
-    <div className="relative inline-flex">
+    <div className="relative">
       {children}
-      <span className="absolute top-0.5 right-0.5 grid min-h-5 min-w-5 translate-x-2/4 -translate-y-2/4 place-items-center rounded-full text-xs bg-primary text-primary-foreground">
-        {value}
+      <span className="absolute translate-x-1/4 -translate-y-1/4 -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-black tracking-tighter text-white ring-2 ring-background animate-in zoom-in duration-300 shadow-lg shadow-primary/20">
+        {value > 99 ? "99+" : value}
       </span>
     </div>
   );

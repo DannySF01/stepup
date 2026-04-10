@@ -1,9 +1,11 @@
+"use client";
 import useDebounce from "@/hooks/useDebounce";
 import { createClient } from "@/lib/supabase/client";
 import { Product } from "@/lib/types/products.types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SearchIcon, X } from "lucide-react";
 
 export default function Search() {
   const [search, setSearch] = useState("");
@@ -17,10 +19,8 @@ export default function Search() {
     let queryBuilder = supabase.from("products").select("*");
 
     if (query.length < 3) {
-      // Para termos curtos, ilike funciona melhor
       queryBuilder = queryBuilder.ilike("name", `%${query}%`);
     } else {
-      // Para pesquisas complexas, usar textSearch
       queryBuilder = queryBuilder.textSearch("name", query, {
         config: "simple",
         type: "websearch",
@@ -28,14 +28,12 @@ export default function Search() {
     }
 
     const { data } = await queryBuilder.limit(5);
-
     return { data };
   }
 
   useEffect(() => {
     async function search() {
       if (!query) return setResults([]);
-
       const { data } = await searchFallback();
       setResults(data || []);
     }
@@ -44,9 +42,11 @@ export default function Search() {
 
   function handleClickResult() {
     setResults([]);
+    setSearch("");
   }
 
   function handleClickSearch() {
+    if (!search) return;
     setResults([]);
     router.push(`/products?q=${search}`);
   }
@@ -59,52 +59,73 @@ export default function Search() {
   }
 
   return (
-    <div className="w-full max-w-60 md:max-w-60 lg:max-w-80">
-      <div className="relative">
+    <div className="relative w-full max-w-md group">
+      <div className="relative flex items-center">
+        <SearchIcon
+          size={18}
+          className="absolute left-4 text-muted-foreground group-focus-within:text-primary transition-colors duration-300"
+        />
+
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full bg-transparent text-sm border rounded-md pr-12 pl-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow focus:border-accent hover:border-accent"
-          placeholder="Pesquisar..."
+          className="w-full bg-muted/40 text-sm font-medium border border-border/40 rounded-2xl pl-11 pr-12 py-2.5 transition-all duration-300 focus:outline-none focus:bg-background focus:border-primary/50 focus:ring-4 focus:ring-primary/10 placeholder:text-muted-foreground/60"
+          placeholder="Pesquisar sneakers..."
         />
 
+        {search && (
+          <button
+            onClick={() => {
+              setSearch("");
+              setResults([]);
+            }}
+            className="absolute right-12 p-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <X size={14} />
+          </button>
+        )}
+
         <button
-          className="absolute right-1 top-1 rounded bg-primary p-1.5 border border-transparent text-center text-sm text-primary-foreground transition-all shadow-sm hover:shadow hover:bg-primary/80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="absolute right-2 h-8 w-8 flex items-center justify-center rounded-xl bg-primary text-primary-foreground transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
           type="button"
           onClick={handleClickSearch}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
+          <SearchIcon size={14} strokeWidth={3} />
         </button>
       </div>
+
       {results.length > 0 && (
-        <div className="absolute z-99 border rounded-md mt-2 p-2 bg-background">
+        <div className="absolute top-full left-0 right-0 z-50 mt-2 p-2 bg-background/95 backdrop-blur-md border border-border/40 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-3 py-1.5 mb-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
+            Sugestões
+          </div>
           {results.map((result) => (
-            <div
-              className="p-1.5 text-sm cursor-pointer hover:bg-muted rounded-md"
+            <Link
               key={result.id}
+              onClick={handleClickResult}
+              href={`/products/${result.id}`}
+              className="flex items-center gap-3 p-2 text-sm font-semibold rounded-xl hover:bg-primary/5 hover:text-primary transition-all group"
             >
-              <Link
-                onClick={handleClickResult}
-                href={`/products/${result.id}`}
-                className="text-ellipsis whitespace-nowrap overflow-hidden"
-              >
-                {result.name}
-              </Link>
-            </div>
+              <div className="w-8 h-8 rounded-lg bg-muted overflow-hidden shrink-0">
+                {result.image_url && (
+                  <img
+                    src={result.image_url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              <span className="truncate">{result.name}</span>
+            </Link>
           ))}
+          <button
+            onClick={handleClickSearch}
+            className="w-full mt-1 p-2 text-xs font-bold text-center text-primary bg-primary/5 rounded-xl hover:bg-primary/10 transition-colors"
+          >
+            Ver todos os resultados
+          </button>
         </div>
       )}
     </div>

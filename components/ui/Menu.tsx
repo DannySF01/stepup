@@ -8,7 +8,7 @@ function Menu({
   className,
 }: {
   icon: React.ReactNode;
-  title?: string;
+  title?: string | string[];
   children: React.ReactNode;
   className?: string;
 }) {
@@ -23,26 +23,31 @@ function Menu({
     }
 
     if (isOpen) {
-      document.addEventListener("click", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
-    return () =>
-      document.removeEventListener("click", () => handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
   return (
-    <div className="my-auto">
-      <div
-        className={`flex items-center gap-1.5 cursor-pointer rounded-md ${className}`}
+    <div className="relative flex items-center" ref={menuRef}>
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        ref={menuRef}
+        className={`flex items-center gap-3 cursor-pointer rounded-xl transition-all active:scale-95 ${className}`}
       >
-        {icon}
-        <p>{title}</p>
-      </div>
+        <div className="flex items-center justify-center transition-colors group-hover:text-primary">
+          {icon}
+        </div>
+        {title && (
+          <p className="hidden lg:block text-sm font-bold tracking-tight text-foreground">
+            {title}
+          </p>
+        )}
+      </button>
+
       {isOpen && (
-        <div className="absolute z-10 min-w-45 overflow-auto rounded-lg border mt-1.5 bg-card p-1.5 shadow-sm focus:outline-none">
-          {children}
+        <div className="absolute right-0 top-full z-50 mt-3 min-w-55 overflow-hidden rounded-2xl border border-border/40 bg-background/95 backdrop-blur-md p-1.5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+          <div className="flex flex-col gap-1">{children}</div>
         </div>
       )}
     </div>
@@ -53,20 +58,26 @@ function MenuItem({
   icon,
   onClick,
   children,
+  className,
 }: {
   icon: React.ReactNode;
-  href?: string;
   onClick?: () => void;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <button
-      id="menu-item"
       onClick={onClick}
-      className="flex w-full text-sm items-center rounded-md p-3 transition-all opacity-100 hover:bg-muted"
+      className={`
+        flex w-full items-center gap-3 rounded-xl p-3 text-sm font-semibold 
+        text-muted-foreground transition-all hover:bg-primary/5 hover:text-primary
+        active:scale-[0.98] group ${className}
+      `}
     >
-      <div>{icon}</div>
-      <div className="ml-2 whitespace-nowrap">{children}</div>
+      <div className="shrink-0 transition-transform group-hover:scale-110">
+        {icon}
+      </div>
+      <div className="whitespace-nowrap tracking-tight">{children}</div>
     </button>
   );
 }
