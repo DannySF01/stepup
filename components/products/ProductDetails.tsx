@@ -4,19 +4,16 @@ import { addToCart } from "@/lib/cart/addToCart";
 import addToFavorites from "@/lib/favorites/addToFavorites";
 import { ProductDetailed } from "@/lib/types/products.types";
 import { formatToCurrency } from "@/lib/utils/formatPrice";
-import {
-  CircleQuestionMark,
-  Heart,
-  HeartCrack,
-  Share2,
-  ShoppingBag,
-  Truck,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+import { Heart, ShoppingBag, Truck, ShieldCheck, Check } from "lucide-react";
+import { useState } from "react";
 import { useToast } from "../ui/Toast";
 import Rating from "../ui/Rating";
 import { useRouter } from "next/navigation";
-import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
+
+interface ProductDetailsProps {
+  product: ProductDetailed;
+  isFav: boolean;
+}
 
 type ProductStockWithSize = {
   stock: number;
@@ -26,166 +23,191 @@ type ProductStockWithSize = {
   };
 };
 
-type ProductDetailsProps = {
-  product: ProductDetailed;
-  isFav: boolean;
-};
-
 export default function ProductDetails({
   product,
   isFav,
 }: ProductDetailsProps) {
   const [selectedSize, setSelectedSize] = useState<ProductStockWithSize>();
-  const [error, setError] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(isFav);
-
   const router = useRouter();
-
+  const { toast } = useToast();
   const sizes = product.product_sizes as ProductStockWithSize[];
 
-  const { toast } = useToast();
-
   const addItemToCart = async () => {
-    setError(null);
-    if (!selectedSize) return setError("Nenhum tamanho selecionado");
+    if (!selectedSize)
+      return toast({
+        description: "Por favor, selecione um tamanho",
+        variant: "error",
+      });
     const response = await addToCart(product.id, selectedSize.sizes.id);
-    if (response.state === "error") return setError(response.message);
+    if (response.message && response.state === "error")
+      return toast({ description: response.message, variant: "error" });
+    toast({
+      description: "Produto adicionado ao carrinho",
+    });
     router.refresh();
   };
 
   const addItemToFavorites = async () => {
-    setError(null);
     const response = await addToFavorites(product.id);
-    if (response.state === "error") return setError(response.message);
+    if (response.state === "error")
+      return toast({ description: response.message, variant: "error" });
     setIsFavorite(!isFavorite);
-    router.refresh();
-  };
-
-  useEffect(() => {
-    if (error) toast({ description: error, variant: "error" });
-    setError(null);
-  }, [error]);
-
-  const shareProduct = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast({ variant: "info", description: "Link copiado" });
+    toast({
+      description: isFavorite
+        ? "Removido dos favoritos"
+        : "Adicionado aos favoritos",
+    });
   };
 
   return (
-    <div className="flex w-full gap-9 py-12">
-      <div className="flex-3">
-        <img
-          className="w-full max-h-full aspect-square object-cover rounded-md border"
-          src={product?.image_url || ""}
-          alt={product?.name}
-        />
-      </div>
-      <div className="flex flex-2 flex-col gap-6">
-        <div>
-          <h2 className="text-2xl font-semibold">{product?.name}</h2>
-          <Rating rating={product?.rating_avg} />
-          <div className="text-2xl mt-3">
+    <div className="flex flex-col lg:flex-row gap-16">
+      <div className="flex-1">
+        <div className="sticky top-24 space-y-4">
+          <div className="relative aspect-4/5 overflow-hidden rounded-3xl border border-border/40 bg-muted/20">
+            <img
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              src={product?.image_url || ""}
+              alt={product?.name || "Product"}
+            />
             {product?.on_sale && (
-              <div>
-                {formatToCurrency(product.sale_price)}
-                <span className="text-sm line-through text-muted-foreground ml-2">
+              <span className="absolute top-6 left-6 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-lg shadow-xl shadow-primary/20">
+                Promoção
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col">
+        <div className="sticky top-24 space-y-8">
+          <div className="space-y-4 border-b border-border/40 pb-8">
+            <div className="space-y-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+                {product.brands?.name || "Premium Collection"}
+              </span>
+              <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-tight text-foreground">
+                {product?.name}
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <Rating rating={product?.rating_avg} />
+              <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                {product.rating_count} Reviews
+              </span>
+            </div>
+
+            <div className="text-3xl font-black tracking-tighter tabular-nums flex items-baseline gap-3">
+              {product?.on_sale ? (
+                <>
+                  <span className="text-foreground">
+                    {formatToCurrency(product.sale_price)}
+                  </span>
+                  <span className="text-lg text-muted-foreground line-through opacity-40 font-bold">
+                    {formatToCurrency(product.price)}
+                  </span>
+                </>
+              ) : (
+                <span className="text-foreground">
                   {formatToCurrency(product.price)}
                 </span>
-              </div>
-            )}
-            {!product?.on_sale && formatToCurrency(product.price)}
+              )}
+            </div>
           </div>
-        </div>
-        <div>
-          <h3 className="pb-3 font-semibold">Tamanhos</h3>
-          <div className="flex gap-3">
-            {sizes?.map((s: ProductStockWithSize) => (
-              <Button
-                disabled={s.stock === 0}
-                size="lg"
-                variant={
-                  selectedSize?.sizes.id === s.sizes.id ? "default" : "outline"
-                }
-                key={s.sizes.id}
-                onClick={() =>
-                  setSelectedSize(
-                    selectedSize?.sizes.id === s.sizes.id ? undefined : s,
-                  )
-                }
-              >
-                EU {s.sizes.value}
-              </Button>
-            ))}
-            {sizes?.length === 0 && (
-              <p className="text-destructive">
-                Produto indisponivel no momento
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="flex gap-3">
-          <Button
-            size="lg"
-            className="flex-9 font-semibold"
-            onClick={addItemToCart}
-          >
-            <ShoppingBag /> Adicionar ao carrinho
-          </Button>
 
-          {isFavorite ? (
-            <Button
-              variant="outline"
-              size="lg"
-              className="flex-1"
-              onClick={addItemToFavorites}
-            >
-              <HeartCrack className="text-destructive" />
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="lg"
-              className="flex-1"
-              onClick={addItemToFavorites}
-            >
-              <Heart />
-            </Button>
-          )}
-        </div>
-        <div>
-          <h3 className="pb-3 font-semibold">Informação do produto</h3>
-          {product?.description || "Sem descrição disponivel"}
-        </div>
-        <div>
-          <h3 className=" pb-3 font-semibold">Informações adicionais</h3>
-          <div className="flex flex-col gap-3 text-sm">
-            <div className="flex gap-3 border-b pb-3">
-              <p className="flex-1">Marca</p>
-              <p className="text-muted-foreground flex-1">Nike</p>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-black uppercase tracking-widest text-foreground">
+                Selecionar Tamanho
+              </h3>
+              <button className="text-[10px] font-bold text-primary underline underline-offset-4">
+                Guia de tamanhos
+              </button>
             </div>
-            <div className="flex gap-3 border-b pb-3">
-              <p className="flex-1">Cor</p>
-              <p className="text-muted-foreground flex-1">Branca</p>
+
+            <div className="grid grid-cols-4 gap-2">
+              {sizes?.map((s) => {
+                const active = selectedSize?.sizes.id === s.sizes.id;
+                const outOfStock = s.stock === 0;
+                return (
+                  <button
+                    key={s.sizes.id}
+                    disabled={outOfStock}
+                    onClick={() => setSelectedSize(active ? undefined : s)}
+                    className={`
+                      h-12 rounded-xl border text-sm font-bold transition-all duration-200 relative overflow-hidden
+                      ${
+                        active
+                          ? "border-primary bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]"
+                          : "border-border/60 text-muted-foreground hover:border-primary/50 hover:text-primary"
+                      }
+                      ${outOfStock ? "opacity-30 cursor-not-allowed bg-muted/50" : "cursor-pointer"}
+                    `}
+                  >
+                    {s.sizes.value}
+                    {active && (
+                      <Check size={10} className="absolute top-1 right-1" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </div>
-        <div className="flex justify-between text-sm border-y py-3 mt-auto">
-          <Button variant="ghost" className="flex items-center gap-2">
-            <CircleQuestionMark />
-            Perguntas
-          </Button>
-          <Button variant="ghost" className="flex items-center gap-2">
-            <Truck />
-            Entregas e devoluções
-          </Button>
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2"
-            onClick={() => shareProduct()}
-          >
-            <Share2 />
-            Partilhar
-          </Button>
+
+          <div className="flex gap-3">
+            <Button
+              size="lg"
+              className="flex-1 h-14 rounded-2xl font-bold uppercase tracking-widest gap-3 shadow-xl shadow-primary/20"
+              onClick={addItemToCart}
+            >
+              <ShoppingBag size={20} />
+              Adicionar ao Carrinho
+            </Button>
+
+            <Button
+              variant="outline"
+              size="lg"
+              className={`h-14 w-14 rounded-2xl border-border/60 transition-all ${isFavorite ? "text-red-500 bg-red-50 border-red-200" : "hover:text-primary hover:border-primary/40"}`}
+              onClick={addItemToFavorites}
+            >
+              <Heart className={isFavorite ? "fill-current" : ""} size={20} />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 pt-4">
+            <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/30 border border-border/40">
+              <Truck size={18} className="text-primary" />
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-foreground">
+                  Entrega Grátis
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  Em compras acima de 80€
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/30 border border-border/40">
+              <ShieldCheck size={18} className="text-primary" />
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-foreground">
+                  Garantia StepUp
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  Produtos 100% originais
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3 pt-4 border-t border-border/40">
+            <h3 className="text-xs font-black uppercase tracking-widest text-foreground">
+              Sobre o Produto
+            </h3>
+            <p className="text-sm leading-relaxed text-muted-foreground font-medium">
+              {product?.description}
+            </p>
+          </div>
         </div>
       </div>
     </div>

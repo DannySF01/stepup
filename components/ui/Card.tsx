@@ -9,6 +9,7 @@ interface CardProps {
   on_sale: boolean | null;
   href: string;
 }
+
 export default function Card({
   name,
   image_url,
@@ -19,28 +20,44 @@ export default function Card({
 }: CardProps) {
   return (
     <Link
-      className="max-w-80 bg-base-100 border rounded-lg bg-card border-border"
       href={href}
+      className="group flex flex-col bg-card rounded-2xl border border-border/40 overflow-hidden hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500"
     >
-      <img
-        className="w-full max-w-80 aspect-square object-cover rounded-t-lg"
-        src={image_url || undefined}
-        alt={undefined}
-      />
-      <div className="p-3">
-        <h2 className="text-ellipsis overflow-hidden whitespace-nowrap">
+      <div className="relative aspect-[4/5] overflow-hidden bg-muted/20">
+        <img
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          src={image_url || "/placeholder-shoe.png"}
+          alt={name || "Produto"}
+        />
+
+        {on_sale && (
+          <div className="absolute top-3 left-3 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg shadow-lg animate-in fade-in zoom-in duration-300">
+            Oferta
+          </div>
+        )}
+      </div>
+
+      <div className="p-4 space-y-1">
+        <h2 className="text-sm font-bold text-foreground truncate tracking-tight group-hover:text-primary transition-colors">
           {name}
         </h2>
-        {on_sale ? (
-          <div className="flex gap-2">
-            <p className="font-semibold"> {formatToCurrency(sale_price)}</p>
-            <p className="line-through text-muted-foreground text-sm self-center">
+
+        <div className="flex items-baseline gap-2">
+          {on_sale ? (
+            <>
+              <span className="text-lg font-black text-foreground tabular-nums tracking-tighter">
+                {formatToCurrency(sale_price)}
+              </span>
+              <span className="text-xs text-muted-foreground line-through tabular-nums opacity-60">
+                {formatToCurrency(price)}
+              </span>
+            </>
+          ) : (
+            <span className="text-lg font-black text-foreground tabular-nums tracking-tighter">
               {formatToCurrency(price)}
-            </p>
-          </div>
-        ) : (
-          <p className="font-semibold">{formatToCurrency(price)}</p>
-        )}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );
