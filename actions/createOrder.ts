@@ -1,6 +1,7 @@
 "use server";
 
 import { createServer } from "@/lib/supabase/server";
+import { formatToCents } from "@/lib/utils/formatPrice";
 import { getEffectivePrice } from "@/lib/utils/getEffectivePrice";
 import { revalidatePath } from "next/cache";
 
@@ -56,10 +57,10 @@ export async function createOrder(prevState: any) {
     return acc + price * item.quantity;
   }, 0);
 
-  const discount = 10;
-  const delivery = 500;
+  const discount = 10; // 10%
+  const delivery = 500; // 5€
 
-  const total_discount = subtotal * (discount / 100);
+  const total_discount = Math.floor(subtotal * (discount / 100));
   const total = subtotal + delivery - total_discount;
 
   const { data: order, error: orders_error } = await supabase

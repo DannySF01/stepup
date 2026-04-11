@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Minus, Plus } from "lucide-react";
 
 interface CounterInputProps {
   value: number;
@@ -14,59 +15,44 @@ export default function CounterInput({
 }: CounterInputProps) {
   const [amount, setAmount] = useState(value);
 
-  function handleDecrease() {
-    if (amount > 0) {
-      setAmount(amount - 1);
-      onChange(amount - 1);
+  const updateValue = (newValue: number) => {
+    if (newValue >= 1) {
+      setAmount(newValue);
+      onChange(newValue);
     }
-  }
-
-  function handleIncrease() {
-    setAmount(amount + 1);
-    onChange(amount + 1);
-  }
+  };
 
   return (
-    <div className="w-24 max-w-sm">
-      <label className="block mb-1 text-sm text-slate-600">{title}</label>
-      <div className="relative">
+    <div className="flex flex-col gap-3 items-center">
+      {title && (
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+          {title}
+        </span>
+      )}
+
+      <div className="flex items-center bg-muted/20 rounded-2xl border border-border/40 p-1.5 transition-all focus-within:border-primary/50 focus-within:ring-4 focus-within:ring-primary/10">
         <button
-          id="decreaseButton"
-          className="absolute left-1 top-1 cursor-pointer rounded-md border border-transparent p-1.5 text-center text-sm transition-all text-slate-600 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          onClick={() => updateValue(amount - 1)}
+          disabled={amount <= 1}
+          className="h-10 w-10 flex items-center justify-center rounded-xl text-muted-foreground hover:bg-background hover:text-foreground transition-all active:scale-95 disabled:opacity-20 disabled:pointer-events-none border border-transparent hover:border-border/60"
           type="button"
-          onClick={handleDecrease}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="w-4 h-4"
-          >
-            <path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />
-          </svg>
+          <Minus size={14} strokeWidth={3} />
         </button>
+
         <input
-          id="amountInput"
           type="number"
-          placeholder="0"
           value={amount}
-          onChange={(e) => setAmount(parseInt(e.target.value))}
-          className="w-full bg-transparent text-center font-semibold border-slate-200 rounded-md text-sm border-0 p-6 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          onChange={(e) => updateValue(parseInt(e.target.value) || 1)}
+          className="w-12 border-0 bg-transparent text-center font-black tracking-tighter text-base text-foreground focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
+
         <button
-          id="increaseButton"
-          className="absolute right-1 top-1 cursor-pointer rounded-md border border-transparent p-1.5 text-center text-sm transition-all text-slate-600 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          onClick={() => updateValue(amount + 1)}
+          className="h-10 w-10 flex items-center justify-center rounded-xl text-muted-foreground hover:bg-background hover:text-primary transition-all active:scale-95 border border-transparent hover:border-border/60"
           type="button"
-          onClick={handleIncrease}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="w-4 h-4"
-          >
-            <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
-          </svg>
+          <Plus size={14} strokeWidth={3} />
         </button>
       </div>
     </div>
