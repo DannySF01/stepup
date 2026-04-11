@@ -17,46 +17,51 @@ export default function Banner({
   imageUrl,
 }: BannerProps) {
   return (
-    <section className="relative group h-75 md:h-100 w-full rounded-3xl overflow-hidden flex items-center border border-border/40 shadow-2xl">
-      <div className="absolute inset-0 z-0 bg-zinc-950">
+    <section className="relative group h-100 md:h-125 w-full rounded-[2.5rem] overflow-hidden flex items-center border border-primary/40 shadow-2xl transition-all duration-500 hover:border-primary/20">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover opacity-70 transition-transform duration-1000 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover opacity-60 grayscale-20 transition-transform duration-1000 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full bg-linear-to-tr from-zinc-950 via-primary/30 to-primary" />
+          <div className="relative w-full h-full bg-background">
+            <div className="absolute inset-0 bg-linear-to-br from-primary/30 via-primary/40 to-primary/50" />
+          </div>
         )}
       </div>
 
-      <div className="absolute inset-0 z-1 bg-linear-to-r from-black/90 via-black/40 to-transparent" />
+      <div className="relative z-10 p-8 md:p-20 text-foreground max-w-3xl space-y-6 animate-in fade-in slide-in-from-left-8 duration-1000">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="h-0.5 w-8 bg-primary rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary antialiased">
+              Drop Limitado
+            </span>
+          </div>
 
-      <div className="relative z-10 p-8 md:p-16 text-white max-w-2xl space-y-4 animate-in fade-in slide-in-from-left-6 duration-700">
-        <div className="space-y-1">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary antialiased">
-            Oferta Exclusiva
-          </span>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter italic uppercase leading-none">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter italic uppercase leading-[0.85] text-foreground">
             {title}
           </h2>
         </div>
 
         {subtitle && (
-          <p className="text-sm md:text-lg text-zinc-400 font-medium max-w-md leading-relaxed tracking-tight">
+          <p className="text-sm md:text-lg max-w-md leading-relaxed tracking-tight">
             {subtitle}
           </p>
         )}
 
-        <div className="pt-4">
+        <div className="pt-6">
           <Link
             href={ctaHref}
-            className="group/btn inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-primary hover:text-white transition-all duration-300 shadow-xl shadow-black/40"
+            className="group/btn relative inline-flex items-center gap-4 bg-foreground text-background px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 hover:bg-primary hover:text-white hover:shadow-2xl hover:shadow-primary/30 active:scale-95 overflow-hidden"
           >
-            {ctaLabel}
+            <span className="relative z-10">{ctaLabel}</span>
             <ArrowRight
-              size={18}
-              className="transition-transform group-hover/btn:translate-x-1"
+              size={20}
+              strokeWidth={3}
+              className="relative z-10 transition-transform group-hover/btn:translate-x-2"
             />
           </Link>
         </div>
